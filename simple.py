@@ -1,7 +1,9 @@
 import copy
-import utils
+import util
 import pprint
 import itertools
+import problems
+import CityMap
 
 class RoutesState:
   def __init__(self, graph, numBusses, finalStop):
@@ -12,35 +14,27 @@ class RoutesState:
     self.covered.add(finalStop)
     for i in range(numBusses):
       self.busses[i] = (finalStop,)
-  def getCopy(self, newStops):
+  def copyAdvanceAllBusses(self, newStops):
     newState = RoutesState(self.graph, len(self.busses), self.finalStop)
     newState.covered = set(self.covered)
-    for i, stop in enumerate(newStopPerBus):
+    for i, stop in enumerate(newStops):
+        if not stop:
+          continue
         newState.busses[i] = self.busses[i] + (stop,)
         newState.covered.add(stop)
+    return newState
+  def copyAdvanceOneBus(self, index, newStop):
+    newState = RoutesState(self.graph, len(self.busses), self.finalStop)
+    newState.covered = set(self.covered)
+    newState.busses = copy.deepcopy(self.busses)
+    newState.busses[index] = newState.busses[index] + (newStop,)
+    newState.covered.add(stop)
+    return newState
   def __hash__(self):
     return hash(tuple(self.busses.values()))
+  def __repr__(self):
+    return str(self.busses) + " " + str(self.covered)
 
-class UniweightProblem:
-  def __init__(self, initialState):
-    self.initialState = initialState
-  def getStartState(self):
-    return self.initialState.finalStop
-  def isGoalState(self, state):
-    return len(state.covered) == len(state.graph)
-  def getSuccessors(self, state):
-    successorStates = []
-    allNewStops = {}
-    for busIndex, busRoute in state.busses.iteritems():
-      if len(busRoute) > 1:
-        newStops = state.graph.getChildren(busRoute[-1], busRoute[-2])
-      else:
-        newStops = state.graph.getChildren(busRoute[-1])
-      allNewStops[busIndex] = newStops
-
-    for newStopPerBus in itertools.product(newStops.values())
-      newState = state.getCopy(newStopPerBus)
-      successorStates.append((newState, newStopPerBus))
 
 def breadthFirstSearch(problem):
   "Search the shallowest nodes in the search tree first. [p 81]"
@@ -66,15 +60,52 @@ def breadthFirstSearch(problem):
         nodes.push(state[0])
         directions.push(path+[state[1]])
 
+
   return []
 
+def nullHeuristic(state, problem=None):
+  """
+  A heuristic function estimates the cost from the current state to the nearest
+  goal in the provided SearchProblem.  This heuristic is trivial.
+  """
+  return 0
+
+def aStarSearch(problem, heuristic=nullHeuristic):
+  "Search the node that has the lowest combined cost and heuristic first."
+  # PriorityQueue
+  nodes = util.PriorityQueue()
+  directions = util.PriorityQueue()
+  nodes.push((problem.getStartState(),[],0),0)
+  seen = []
+  import pprint
+  while not nodes.isEmpty():
+    current_node, path, current_cost = nodes.pop()
+    #print('>>> current: %s, cost: %s, path: %s' % (str(current_node),current_cost,path))
+    # if we've already reached this point in the graph before - move on
+    if current_node in seen:
+        continue
+    seen.append(current_node)
+    if problem.isGoalState(current_node):
+        # we found the goal!
+        return path
+    new_states = problem.getSuccessors(current_node)
+    new_states = [s for s in new_states if s[0] not in seen][::-1]
+    for state, direction, cost in new_states:
+        new_cost = current_cost + cost + heuristic(state, problem)
+        nodes.push((state,path+[direction],current_cost+cost),new_cost)
+
+  return []
+
+def cornersHeuristic(state, problem):
+  pass
+
+
 def main():
-  graph = pass
-  goal = pass
-  initState = RoutesState(graph, 1, goal)
-  problem = UniweightProblem(initState)
-  path = breadthFirstSearch(problem)
-  pprint.pprint(path)
+  graph = CityMap.CityMap("map1.txt")
+  initState = RoutesState(graph, 1, graph.final_station)
+  prob = problems.UniweightProblem(initState)
+  path = breadthFirstSearch(prob)
+  pprint.pprint([(graph.final_station,)] + path)
 
 
 if __name__ == '__main__':

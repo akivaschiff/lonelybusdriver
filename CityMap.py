@@ -1,0 +1,124 @@
+
+# coding: utf-8
+
+# In[7]:
+
+import networkx
+
+# In[88]:
+
+import json
+
+graph2 = {
+    "lines" : 1,
+    "stations" : [
+        ["name1", 2, 2],
+        ["name2", 1, 2],
+        ["name3", 2, 1],
+        ["name4", 1, 1],
+
+    ],
+    "roads" : [
+        ["name1", "name2"],
+        ["name2", "name4"],
+        ["name3", "name4"],
+        ["name1", "name3"],
+        ["name2", "name3"],
+    ],
+    "goal" : "name2"
+}
+
+with open("map1.txt", "w") as map_file:
+    json.dump(graph2, map_file)
+
+
+
+# In[121]:
+
+import math
+import json 
+
+class CityMap:
+    
+    COLORS = ['r', 'g', 'b', 'y', 'o']
+    
+    def __init__(self, map_file):
+        """
+        @param map_file, location to the city map file.
+        """
+        self.g = networkx.Graph()
+        with open(map_file, "r") as temp_map:
+            self.map_file = json.load(temp_map)
+        self._read_nodes()
+        self._read_edges()
+        self.final_station = self.map_file["goal"]
+        self.number_of_busses = self.map_file["lines"]
+        self.routes = {i : [] for i in range(1, self.number_of_busses + 1)}
+        
+    def _read_nodes(self):
+        self.labels = {}
+        self.pos = {}
+        for name, x, y in self.map_file["stations"]:
+            self.g.add_node(name)
+            self.labels[name] = name
+            self.pos[name] = (x, y)
+            
+    def _read_edges(self):
+        self.edges_labels = {}
+        for road in self.map_file["roads"]:
+            self.g.add_edge(*road)
+            self.edges_labels[tuple(road)] = self.get_weight(road)
+            
+            
+    def _build_edge_list(self, line_number):
+        edge_list = []
+        for i in range(len(self.routes[line_number])-1):
+            edge_list.append((self.routes[line_number][i], self.routes[line_number][i+1]))
+        return edge_list
+    
+    def draw(self):
+        networkx.draw_networkx_nodes(self.g, self.pos)
+        networkx.draw_networkx_edges(self.g, self.pos)
+        networkx.draw_networkx_labels(self.g, self.pos, labels=self.labels)
+        networkx.draw_networkx_edge_labels(self.g, self.pos, edge_labels=self.edges_labels)
+        for route in self.routes:
+            if not self.routes[route]:
+                continue
+            edge_list = self._build_edge_list(route)
+            networkx.draw_networkx_edges(self.g, self.pos, edge_color=CityMap.COLORS[route-1], edgelist=edge_list)
+        
+    def get_weight(self, edge):
+        return CityMap.euclid_distance(self.pos[edge[0]], self.pos[edge[1]])
+        
+    def get_neighbors(self, node):
+        return self.g.neighbors(node)
+        
+    def __len__(self):
+        return len(self.g.nodes())
+    
+    def set_route(self, line_number, route):
+        self.routes[line_number] = route
+        
+    def get_route_weight(self, line_number):
+        if not self.routes[line_number]:
+            return 0
+        edge_list = self._build_edge_list(line_number)
+        x = [self.get_weight(edge) for edge in edge_list]
+        print x
+        return sum(x)
+    
+    @staticmethod
+    def euclid_distance(pos1, pos2):
+        x1, y1 = pos1
+        x2, y2 = pos2
+        return int(math.sqrt((x1-x2)**2 + (y1-y2)**2))
+            
+
+
+# In[122]:
+
+#m = CityMap("map1.txt")
+#m.set_route(1, ["name1", "name5", "name6"])
+#m.draw()
+#print m.get_route_weight(1)
+
