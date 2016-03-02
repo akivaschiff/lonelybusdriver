@@ -4,20 +4,21 @@
 # In[7]:
 
 import networkx
+import matplotlib
 
 # In[88]:
 
 import json
 
 graph2 = {
-    "lines" : 1,
+    "lines" : 2,
     "stations" : [
-        ["name1", 2, 2],
-        ["name2", 1, 2],
-        ["name3", 2, 1],
-        ["name4", 1, 1],
-        ["name5", 3, 4],
-        ["name6", 5, 0],
+        ["name1", 1, 0],
+        ["name2", 2, 0],
+        ["name3", 3, 0],
+        ["name4", 4, 0],
+        ["name5", 5, 0],
+        ["name6", 6, 0],
 
     ],
     "roads" : [
@@ -27,7 +28,7 @@ graph2 = {
         ["name4", "name5"],
         ["name5", "name6"],
     ],
-    "goal" : "name1"
+    "goal" : "name3"
 }
 
 with open("map1.txt", "w") as map_file:
@@ -88,7 +89,7 @@ class CityMap:
                 continue
             edge_list = self._build_edge_list(route)
             networkx.draw_networkx_edges(self.g, self.pos, edge_color=CityMap.COLORS[route-1], edgelist=edge_list)
-        
+
     def get_weight(self, edge):
         return CityMap.euclid_distance(self.pos[edge[0]], self.pos[edge[1]])
         

@@ -4,6 +4,7 @@ import pprint
 import itertools
 import problems
 import CityMap
+import matplotlib.pyplot as plt
 
 class Bus:
   def __init__(self, number, final_stop):
@@ -37,21 +38,18 @@ class RoutesState:
   def __hash__(self):
     return hash(tuple([tuple(bus.routes) for bus in self.busses.values()]))
   def __repr__(self):
-    return "\n".join([str(b.route) for b in self.busses.values()]) + \
+    return "\n".join([str(b.number) + ': ' + str(b.route) for b in self.busses.values()]) + \
            '\n>> Covered: ' + str(self.covered)
 
 
 def breadthFirstSearch(problem):
   "Search the shallowest nodes in the search tree first. [p 81]"
   nodes = util.Queue()
-  directions = util.Queue()
   nodes.push(problem.getStartState())
-  directions.push([])
   seen = []
 
   while not nodes.isEmpty():
     current_node = nodes.pop()
-    path = directions.pop()
     # if we've already reached this point in the graph before - move on
     if current_node in seen:
         continue
@@ -59,12 +57,11 @@ def breadthFirstSearch(problem):
     print current_node
     if problem.isGoalState(current_node):
         # we found the goal!
-        return path
+        return current_node
     new_states = problem.getSuccessors(current_node)
     new_states = [s for s in new_states if s[0] not in seen]
     for state in new_states:
         nodes.push(state[0])
-        directions.push(path+[state[1]])
 
   return []
 
@@ -109,8 +106,13 @@ def main():
   graph = CityMap.CityMap("map1.txt")
   initState = RoutesState(graph, graph.number_of_busses, graph.final_station)
   prob = problems.WeightedProblem(initState)
-  path = breadthFirstSearch(prob)
-  pprint.pprint([(graph.final_station,)] + path)
+  final_route = breadthFirstSearch(prob)
+  print "==============================================="
+  print final_route
+  for busnum, bus in final_route.busses.iteritems():
+    graph.set_route(busnum+1, bus.route)
+  graph.draw()
+  plt.show()
 
 
 if __name__ == '__main__':
