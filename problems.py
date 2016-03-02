@@ -10,36 +10,15 @@ class Problem:
   def getSuccessors(self, state):
     raise Exception
 
-class PolyweightProblem(Problem):
+class WeightedProblem(Problem):
   def getSuccessors(self, state):
     successorStates = []
     allNewStops = {}
-    for busIndex, busRoute in state.busses.iteritems():
-      newStops = state.graph.get_neighbors(busRoute[-1])
-      #if len(busRoute) > 1:
-      #  newStops.remove(busRoute[-2])
-      allNewStops[busIndex] = newStops
-
-    for newStopPerBus in itertools.product(*allNewStops.values()):
-      newState = state.getCopy(newStopPerBus)
-      successorStates.append((newState, newStopPerBus))
-    #print successorStates
-    #raw_input()
-    return successorStates
-
-class UniweightProblem(Problem):
-  def getSuccessors(self, state):
-    successorStates = []
-    allNewStops = {}
-    for busIndex, busRoute in state.busses.iteritems():
-      newStops = state.graph.get_neighbors(busRoute[-1])
-      #if len(busRoute) > 1:
-      #  newStops.remove(busRoute[-2])
-      allNewStops[busIndex] = newStops
-
-    for newStopPerBus in itertools.product(*allNewStops.values()):
-      newState = state.copyAdvanceAllBusses(newStopPerBus)
-      successorStates.append((newState, newStopPerBus))
-    #print successorStates
-    #raw_input()
+    shortest_bus = state.getShortestBus()
+    recent_stop = shortest_bus.route[-1]
+    for new_stop in state.graph.get_neighbors(recent_stop):
+      weight_to_stop = state.graph.get_weight((recent_stop, new_stop))
+      newState = state.getCopy()
+      newState.addStop(shortest_bus, new_stop, weight_to_stop)
+      successorStates.append((newState, new_stop))
     return successorStates

@@ -16,16 +16,18 @@ graph2 = {
         ["name2", 1, 2],
         ["name3", 2, 1],
         ["name4", 1, 1],
+        ["name5", 3, 4],
+        ["name6", 5, 0],
 
     ],
     "roads" : [
         ["name1", "name2"],
-        ["name2", "name4"],
-        ["name3", "name4"],
-        ["name1", "name3"],
         ["name2", "name3"],
+        ["name3", "name4"],
+        ["name4", "name5"],
+        ["name5", "name6"],
     ],
-    "goal" : "name2"
+    "goal" : "name1"
 }
 
 with open("map1.txt", "w") as map_file:

@@ -5,6 +5,16 @@ import itertools
 import problems
 import CityMap
 
+class Bus:
+  def __init__(self, number, final_stop):
+    self.number = number
+    self.route = [final_stop]
+    self.final_stop = final_stop
+    self.total_time = 0.0
+  def add_stop(self, node, weight):
+    self.route.append(node)
+    self.total_time += weight
+
 class RoutesState:
   def __init__(self, graph, numBusses, finalStop):
     self.graph = graph
@@ -13,27 +23,22 @@ class RoutesState:
     self.covered = set()
     self.covered.add(finalStop)
     for i in range(numBusses):
-      self.busses[i] = (finalStop,)
-  def copyAdvanceAllBusses(self, newStops):
-    newState = RoutesState(self.graph, len(self.busses), self.finalStop)
-    newState.covered = set(self.covered)
-    for i, stop in enumerate(newStops):
-        if not stop:
-          continue
-        newState.busses[i] = self.busses[i] + (stop,)
-        newState.covered.add(stop)
-    return newState
-  def copyAdvanceOneBus(self, index, newStop):
+      self.busses[i] = Bus(i,finalStop)
+  def getShortestBus(self):
+    return min(self.busses.values(), key = lambda x: x.total_time)
+  def getCopy(self):
     newState = RoutesState(self.graph, len(self.busses), self.finalStop)
     newState.covered = set(self.covered)
     newState.busses = copy.deepcopy(self.busses)
-    newState.busses[index] = newState.busses[index] + (newStop,)
-    newState.covered.add(stop)
     return newState
+  def addStop(self, bus, stop, weight):
+    self.busses[bus.number].add_stop(stop, weight)
+    self.covered.add(stop)
   def __hash__(self):
-    return hash(tuple(self.busses.values()))
+    return hash(tuple([tuple(bus.routes) for bus in self.busses.values()]))
   def __repr__(self):
-    return str(self.busses) + " " + str(self.covered)
+    return "\n".join([str(b.route) for b in self.busses.values()]) + \
+           '\n>> Covered: ' + str(self.covered)
 
 
 def breadthFirstSearch(problem):
@@ -51,6 +56,7 @@ def breadthFirstSearch(problem):
     if current_node in seen:
         continue
     seen.append(current_node)
+    print current_node
     if problem.isGoalState(current_node):
         # we found the goal!
         return path
@@ -59,7 +65,6 @@ def breadthFirstSearch(problem):
     for state in new_states:
         nodes.push(state[0])
         directions.push(path+[state[1]])
-
 
   return []
 
@@ -102,8 +107,8 @@ def cornersHeuristic(state, problem):
 
 def main():
   graph = CityMap.CityMap("map1.txt")
-  initState = RoutesState(graph, 1, graph.final_station)
-  prob = problems.UniweightProblem(initState)
+  initState = RoutesState(graph, graph.number_of_busses, graph.final_station)
+  prob = problems.WeightedProblem(initState)
   path = breadthFirstSearch(prob)
   pprint.pprint([(graph.final_station,)] + path)
 
