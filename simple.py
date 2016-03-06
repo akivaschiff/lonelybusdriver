@@ -1,10 +1,14 @@
+import sys
 import copy
+import time
 import util
 import pprint
 import itertools
 import problems
 import CityMap
 import matplotlib.pyplot as plt
+
+EXPANDED_NODES = 0
 
 class Bus:
   def __init__(self, number, final_stop):
@@ -44,24 +48,25 @@ class RoutesState:
 
 def breadthFirstSearch(problem):
   "Search the shallowest nodes in the search tree first. [p 81]"
+  global EXPANDED_NODES
   nodes = util.Queue()
   nodes.push(problem.getStartState())
   seen = []
 
   while not nodes.isEmpty():
+    EXPANDED_NODES += 1
     current_node = nodes.pop()
     # if we've already reached this point in the graph before - move on
     if current_node in seen:
         continue
     seen.append(current_node)
-    print current_node
     if problem.isGoalState(current_node):
         # we found the goal!
         return current_node
     new_states = problem.getSuccessors(current_node)
-    new_states = [s for s in new_states if s[0] not in seen]
+    new_states = [s for s in new_states if s not in seen]
     for state in new_states:
-        nodes.push(state[0])
+        nodes.push(state)
 
   return []
 
@@ -75,13 +80,14 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest combined cost and heuristic first."
   # PriorityQueue
+  global EXPANDED_NODES
   nodes = util.PriorityQueue()
-  directions = util.PriorityQueue()
-  nodes.push((problem.getStartState(),[],0),0)
+  nodes.push((problem.getStartState(),0),0)
   seen = []
   import pprint
   while not nodes.isEmpty():
-    current_node, path, current_cost = nodes.pop()
+    current_node, current_cost = nodes.pop()
+    EXPANDED_NODES += 1
     #print('>>> current: %s, cost: %s, path: %s' % (str(current_node),current_cost,path))
     # if we've already reached this point in the graph before - move on
     if current_node in seen:
@@ -89,12 +95,12 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     seen.append(current_node)
     if problem.isGoalState(current_node):
         # we found the goal!
-        return path
+        return current_node
     new_states = problem.getSuccessors(current_node)
     new_states = [s for s in new_states if s[0] not in seen][::-1]
-    for state, direction, cost in new_states:
+    for state, cost in new_states:
         new_cost = current_cost + cost + heuristic(state, problem)
-        nodes.push((state,path+[direction],current_cost+cost),new_cost)
+        nodes.push((state,current_cost+cost),new_cost)
 
   return []
 
@@ -102,18 +108,31 @@ def cornersHeuristic(state, problem):
   pass
 
 
-def main():
-  graph = CityMap.CityMap("map1.txt")
+def main(alg = 'bfs'):
+  #graph = CityMap.CityMap("maps\\5ring3bus.txt")
+  graph = CityMap.CityMap("maps\\5mesh3bus.txt")
   initState = RoutesState(graph, graph.number_of_busses, graph.final_station)
-  prob = problems.WeightedProblem(initState)
-  final_route = breadthFirstSearch(prob)
+  start_time = time.time()
+  if alg == 'bfs':
+    prob = problems.WeightedProblem(initState)
+    final_route = breadthFirstSearch(prob)
+  elif alg == 'astar':
+    prob = problems.AStarProblem(initState)
+    final_route = aStarSearch(prob)
+  else:
+    print 'unknown algorithm'
+    return
+  end_time = time.time() - start_time
   print "==============================================="
   print final_route
   for busnum, bus in final_route.busses.iteritems():
     graph.set_route(busnum+1, bus.route)
+  print 'NODES EXPANDED: %d' % (EXPANDED_NODES)
+  print 'TIME: %d' % (end_time)
   graph.draw()
   plt.show()
 
 
 if __name__ == '__main__':
-  main()
+  alg_name = sys.argv[1]
+  main(alg_name)
