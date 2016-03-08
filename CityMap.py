@@ -68,7 +68,7 @@ class CityMap:
         self.edges_labels = {}
         for road in self.map_file["roads"]:
             self.g.add_edge(*road)
-            self.edges_labels[tuple(road)] = self.get_weight(road)
+            self.edges_labels[tuple(road)] = int(self.get_weight(road))
             
     def _build_edge_list(self, line_number):
         edge_list = []
@@ -110,7 +110,7 @@ class CityMap:
     def euclid_distance(pos1, pos2):
         x1, y1 = pos1
         x2, y2 = pos2
-        return int(math.sqrt((x1-x2)**2 + (y1-y2)**2))
+        return math.sqrt((x1-x2)**2 + (y1-y2)**2)
             
 
 
