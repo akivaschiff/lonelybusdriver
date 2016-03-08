@@ -16,7 +16,7 @@ usage:
     with open("5mesh3bus.txt", "w") as map_file:
         json.dump(wrap_graph_to_VRP(create_mesh_graph(5), 5, 3), map_file)
 """
-
+import networkx
 import argparse
 import random
 import json
@@ -61,6 +61,11 @@ def create_star_graph(n):
 def create_random_graph(n):
     raise NotImplemented()
 
+def create_grid2d_graph(n):
+    assert n > 2
+    g = networkx.grid_2d_graph(n, n-2)
+    return g.nodes(), g.edges()
+
 
 def wrap_graph_to_VRP(graph, goal, n_busses, a=0, b=100):
     assert n_busses > 0
@@ -91,7 +96,8 @@ def main():
         'ring': create_ring_graph,
         'mesh': create_mesh_graph,
         'star': create_star_graph,
-        'random': create_random_graph
+        'random': create_random_graph,
+        'grid2d': create_grid2d_graph
     }
 
     args = parser.parse_args()
