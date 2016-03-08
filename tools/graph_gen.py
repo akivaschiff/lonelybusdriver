@@ -72,11 +72,13 @@ def wrap_graph_to_VRP(graph, goal, n_busses, a=0, b=100):
     V, E = graph
     stations = [get_random_node_position(v, a, b) for v in V]
     roads = [[str(v1), str(v2)] for v1, v2 in E]
+    passengers = [[str(v), str(goal-1)] for v in V if v != goal-1]
     return {
         "lines": n_busses,
         "stations": stations,
         "roads": roads,
-        "goal": str(goal-1)
+        "goal": str(goal-1),
+        "passengers": passengers
     }
 
 

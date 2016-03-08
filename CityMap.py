@@ -1,13 +1,7 @@
 
-# coding: utf-8
-
-# In[7]:
 
 import networkx
 import matplotlib
-
-# In[88]:
-
 import json
 
 graph2 = {
@@ -28,7 +22,10 @@ graph2 = {
         ["name4", "name5"],
         ["name5", "name6"],
     ],
-    "goal" : "name3"
+    "goal" : "name3",
+    "passengers": [
+        ["name1", "name2"]
+    ]
 }
 
 with open("map1.txt", "w") as map_file:
@@ -57,6 +54,7 @@ class CityMap:
         self.final_station = self.map_file["goal"]
         self.number_of_busses = self.map_file["lines"]
         self.routes = {i : [] for i in range(1, self.number_of_busses + 1)}
+        self.passengers = self.map_file["passengers"]
         
     def _read_nodes(self):
         self.labels = {}
@@ -71,7 +69,6 @@ class CityMap:
         for road in self.map_file["roads"]:
             self.g.add_edge(*road)
             self.edges_labels[tuple(road)] = self.get_weight(road)
-            
             
     def _build_edge_list(self, line_number):
         edge_list = []
@@ -107,7 +104,6 @@ class CityMap:
             return 0
         edge_list = self._build_edge_list(line_number)
         x = [self.get_weight(edge) for edge in edge_list]
-        print x
         return sum(x)
     
     @staticmethod
