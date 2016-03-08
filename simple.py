@@ -33,9 +33,13 @@ class Bus:
     self.route = [final_stop]
     self.final_stop = final_stop
     self.total_time = 0.0
+    # this data structure is for quickly checking if an edge is in our route
+    self.edges = set()
 
   def add_stop(self, node, weight):
     self.route.append(node)
+    self.edges.add((self.route[-1], self.route[-2]))
+    self.edges.add((self.route[-2], self.route[-1]))
     self.total_time += weight
 
   def build_edge_list(self):
@@ -82,21 +86,24 @@ class RoutesState:
     """
     return sum([self.get_route_weight(line) for line in self.busses])
 
+  def __eq__(self, other):
+    # states are considered equal if the set of edges per bus are identical
+    return all(self.busses[i].edges == other.busses[i].edges for i in range(len(self.busses)))
+
   def __hash__(self):
-    return hash(tuple([tuple(bus.route) for bus in self.busses.values()]))
+    return hash(self.busses[i].edges)
 
   def __repr__(self):
-    return "\n".join([str(b.number) + ': ' + str(b.route) for b in self.busses.values()]) + \
-           '\nCovered: ' + str(self.covered)
+    return "\n".join([str(b.number) + ': ' + str(b.route) for b in self.busses.values()])
 
-
-def breadthFirstSearch(problem):
+def breadthFirstSearch(problem, return_all = False):
   "Search the shallowest nodes in the search tree first. [p 81]"
   global EXPANDED_NODES
   EXPANDED_NODES = 0
   nodes = util.Queue()
   nodes.push(problem.getStartState())
   seen = []
+  all_solutions = []
 
   while not nodes.isEmpty():
     EXPANDED_NODES += 1
@@ -107,14 +114,18 @@ def breadthFirstSearch(problem):
     seen.append(current_node)
     if problem.isGoalState(current_node):
         # we found the goal!
-        print current_node.get_state_weight()
-        return current_node
+        if return_all:
+          all_solutions.append(current_node)
+          continue
+        else:
+          #print "found goal!", current_node.get_state_weight(), current_node
+          return current_node
     new_states = problem.getSuccessors(current_node)
     new_states = [s for s in new_states if s not in seen]
     for state in new_states:
         nodes.push(state)
 
-  return []
+  return all_solutions # this will be empty if return_all flag was false
 
 def nullHeuristic(state, problem=None):
   """
@@ -132,14 +143,14 @@ def aStarSearch(problem, heuristic=nullHeuristic):
   nodes = util.PriorityQueue()
   nodes.push(problem.getStartState(), 0)
 
-  seen = set([])
+  seen = []
   while not nodes.isEmpty():
     current_node = nodes.pop()
     EXPANDED_NODES += 1
     if current_node in seen:
         continue
 
-    seen.add(current_node)
+    seen.append(current_node)
     if problem.isGoalState(current_node):
         print current_node.get_state_weight()
         #goalStates.add(current_node.get_state_weight())
@@ -172,20 +183,26 @@ def test(alg, initState):
   if not final_route:
     print "NO SOLUTION!"
     return 0
+  else:
+    print "SOLUTION:"
+    pprint.pprint(final_route)
 
   print 'NODES EXPANDED: %d' % (EXPANDED_NODES)
   print 'TIME: %d' % (end_time)
+  print "==============================================="
   return (end_time, final_route.get_state_weight(), EXPANDED_NODES)
 
 def run_simple_test(alg):
   NUMBER_OF_TESTS = 10
   result = {}
-  for i in range(1, NUMBER_OF_TESTS):
+  for i in range(5, 6):
     graph = CityMap.CityMap(r"maps\mesh_%d_%d" % (i, 1))
     print r"maps\mesh_%d_%d" % (i, 1)
     initState = RoutesState(graph, graph.number_of_busses, 
       graph.final_station, graph.passengers)
     result[i] = test(alg, initState)
+    graph.draw()
+    plt.show()
   return result
 
 
