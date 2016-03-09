@@ -77,7 +77,6 @@ def wrap_graph_to_VRP(graph, goal, n_busses, a=0, b=100):
         "lines": n_busses,
         "stations": stations,
         "roads": roads,
-        "goal": str(goal-1),
         "passengers": passengers
     }
 
