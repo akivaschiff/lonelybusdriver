@@ -55,6 +55,7 @@ class CityMap:
         self.number_of_busses = self.map_file["lines"]
         self.routes = {i : [] for i in range(1, self.number_of_busses + 1)}
         self.passengers = self.map_file["passengers"]
+        self.map_weight = self.get_total_weight()
         
     def _read_nodes(self):
         self.labels = {}
@@ -89,7 +90,10 @@ class CityMap:
 
     def get_weight(self, edge):
         return CityMap.euclid_distance(self.pos[edge[0]], self.pos[edge[1]])
-        
+
+    def get_total_weight(self):
+        return sum([self.get_weight(edge) for edge in self.g.edges()])
+    
     def get_neighbors(self, node):
         return self.g.neighbors(node)
         
@@ -106,6 +110,11 @@ class CityMap:
         x = [self.get_weight(edge) for edge in edge_list]
         return sum(x)
     
+    def euclid_distance_by_name(self, pos1, pos2):
+        P1 = self.pos[pos1]
+        P2 = self.pos[pos2]
+        return CityMap.euclid_distance(P1, P2)
+
     @staticmethod
     def euclid_distance(pos1, pos2):
         x1, y1 = pos1
