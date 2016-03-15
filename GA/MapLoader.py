@@ -1,9 +1,9 @@
 import networkx as nx
+import matplotlib.pyplot as plt
+import pprint
 import os
 
-
-
-def main(map_name):
+def parse_map(map_name):
 	suffixes = ['Coords','Demand','TravelTimes']
 	files = [os.path.join(os.path.dirname(os.path.abspath(__file__)),'maps',map_name + i + '.txt') for i in suffixes]
 	# read coordinates
@@ -12,19 +12,39 @@ def main(map_name):
 	coords = file(files[0],'r').read().splitlines()
 	for count in range(int(coords[0])):
 		x,y = [float(i) for i in coords[count+1].split(' ')]
-		TransportNetwork.add_node(count, x = x, y = y)
+		TransportNetwork.add_node(count, pos = (x,y))
 
-	print TransportNetwork.nodes(data = True)
 
 	# read traveltimes
-	lines = file(files[2],'r').read().splitlines()
-	for i in range(len(lines)):
-		delim = '\t' if '\t' in lines[i] else ' ' * 4
-		in_line = lines.split(delim)
-		for j in range(len(in_line)):
-			
+	lines = [line for line in file(files[2],'r').read().splitlines() if line]
+	for i, line in enumerate(lines):
+		columns = line.split()
+		for j, col in enumerate(columns):
+			if col != '0' and col != 'Inf':
+				TransportNetwork.add_edge(i,j,weight = float(col))
 
+	# read demand
+	demand = {}
+	lines = [line for line in file(files[1],'r').read().splitlines() if line]
+	for i, line in enumerate(lines):
+		columns = line.split()
+		for j, col in enumerate(columns):
+			num = float(col)
+			if num == 0 or i > j:
+				continue
+			demand[(i,j)] = num # consider duplicating this to easily  access both directions (i,j) = (j,i)
+
+	#print TransportNetwork.edges(data = True)
+	return TransportNetwork, demand
+
+def main(map_name, show = True):
+	TransportNetwork, demand = parse_map(map_name)
+
+	if show == True:
+		positions = nx.get_node_attributes(TransportNetwork, 'pos')
+		nx.draw(TransportNetwork, positions, node_size = 300)
+		plt.show()
 
 if __name__ == '__main__':
 	map_name = "Mandl"
-	main(map_name)
+	main(map_name, True)
