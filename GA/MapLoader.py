@@ -25,7 +25,7 @@ def parse_map(map_name):
 
 	# read demand
 	demand = {}
-	lines = [line for line in file(files[1],'r').read().splitlines() if line]
+	lines = [line for line in file(files[1],'r').read().splitlines() if line.strip()]
 	for i, line in enumerate(lines):
 		columns = line.split()
 		for j, col in enumerate(columns):

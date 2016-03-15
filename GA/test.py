@@ -13,6 +13,14 @@ from GenerateRouteset import generateRouteset
 for i in range(500):
 	child = generateRouteset(g, consts.num_routes, consts.max_route_len, consts.min_route_len)
 	if child:
-		break
+		print child.get_passenger_cost(demand)
+#child.show()
+#print child.get_passenger_cost(demand)
 
-child.show()
+# try:
+# 	child.get_passenger_cost(demand)
+# except:
+# 	print "exception"
+
+
+
