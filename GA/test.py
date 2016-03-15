@@ -10,8 +10,9 @@ g, demand = MapLoader.parse_map("Mandl")
 # routeset.show()
 
 from GenerateRouteset import generateRouteset
-children = []
 for i in range(500):
 	child = generateRouteset(g, consts.num_routes, consts.max_route_len, consts.min_route_len)
 	if child:
-		children.append(child)
+		break
+
+child.show()

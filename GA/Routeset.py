@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import copy
 import consts
 import random
 
@@ -12,6 +13,10 @@ class Routeset(object):
 		self.routes[route_num].append(node)
 	def reverse(self, route_num):
 		self.routes[route_num].reverse()
+	def get_routes(self):
+		return self.routes
+	def add_route(self, route):
+		self.routes.append(copy.copy(route))
 	def calc_route_length(self, route):
 		return sum([self.transportNetwork.edge[route[j]][route[j+1]]['weight'] for j in range(len(route)-1)])
 	def get_operator_cost(self):
@@ -22,9 +27,6 @@ class Routeset(object):
 		# construct new graph
 		# run all pairs shortest path algorithm
 		pass
-	def is_feasable(self):
-		pass
-
 	def show(self):
 		positions = nx.get_node_attributes(self.transportNetwork, 'pos')
 		nx.draw(self.transportNetwork, positions, node_size = 300)

@@ -2,6 +2,7 @@ import random
 from Routeset import Routeset
 
 def generateRouteset(transportNetwork, num_routes, max_len, min_len):
+	# TODO: make sure routes are longer than some minimum
 	chosen = set()
 	routeset = Routeset(num_routes, transportNetwork)
 	for route_num in range(num_routes):
@@ -40,8 +41,6 @@ def repair(routeset, chosen, transportNetwork, num_routes, max_len, min_len):
 		if not routes_to_expand:
 			return False
 		index, route = random.choice(routes_to_expand)
-
-		#print route, chosen
 
 		# try adding a node to either end
 		to_add = [node for node in transportNetwork.neighbors(routeset.routes[index][-1]) if node not in chosen and node not in route]
