@@ -24,34 +24,6 @@ class Routeset(object):
 		pass
 	def is_feasable(self):
 		pass
-	def repair(self, chosen, n, num_routes, max_len, min_len):
-		tried = []
-		while len(chosen) < n:
-			# select a route to expand
-			routes_to_expand = [(i,r) for i,r in enumerate(self.routes) if len(r) < max_len and i not in tried]
-			if not routes_to_expand:
-				return False
-			index, route = random.choice(routes_to_expand)
-
-			print route, chosen
-			print tried
-			# try adding a node to either end
-			to_add = [node for node in self.transportNetwork.neighbors(self.routes[index][-1]) if node not in chosen and node not in route]
-			selected = None
-			if to_add:
-				selected = random.choice(to_add)
-			else:
-				self.reverse(index)
-				to_add_back = [node for node in self.transportNetwork.neighbors(self.routes[index][-1]) if node not in chosen and node not in route]
-				if to_add_back:
-					selected = random.choice(to_add_back)
-			if selected:
-				self.add_stop(index, selected)
-				chosen.add(selected)
-			else:
-				# didn't manage to add any to this route - give up on it
-				tried.append(i)
-		return True
 
 	def show(self):
 		positions = nx.get_node_attributes(self.transportNetwork, 'pos')
