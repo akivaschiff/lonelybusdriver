@@ -1,43 +1,10 @@
 import sys
-import copy
 import time
 import util
 import pprint
-import itertools
 import problems
 import CityMap
 import matplotlib.pyplot as plt
-
-
-def breadthFirstSearch(problem, return_all = False):
-  "Search the shallowest nodes in the search tree first. [p 81]"
-  problem.expanded = 0
-  nodes = util.Queue()
-  nodes.push(problem.getStartState())
-  seen = set([])
-  all_solutions = []
-
-  while not nodes.isEmpty():
-    problem.expanded += 1
-    current_node = nodes.pop()
-    # if we've already reached this point in the graph before - move on
-    if current_node in seen:
-        continue
-    seen.add(current_node)
-    if problem.isGoalState(current_node):
-        # we found the goal!
-        if return_all:
-          all_solutions.append(current_node)
-          continue
-        else:
-          #print "found goal!", current_node.get_state_weight(), current_node
-          return current_node
-    new_states = problem.getSuccessors(current_node)
-    new_states = [s for s in new_states if s not in seen]
-    for state in new_states:
-        nodes.push(state)
-
-  return all_solutions # this will be empty if return_all flag was false
 
 def nullHeuristic(state, problem=None):
   """
@@ -74,9 +41,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 def test(alg, cityMap):
   start_time = time.time()
   problem = problems.VRPProblem(cityMap)
-  if alg == 'bfs':
-    final_route = breadthFirstSearch(problem)
-  elif alg == 'astar':
+  if alg == 'astar':
     final_route = aStarSearch(problem)
   else:
     print 'unknown algorithm'
@@ -102,8 +67,8 @@ def run_simple_test(alg):
   NUMBER_OF_TESTS = 10
   result = {}
   for i in range(1, 2):
-    graph = CityMap.CityMap(r"maps\mesh_4_1")
-    print r"maps\mesh_4_1"
+    graph = CityMap.CityMap(r"maps\random_9_1")
+    print r"maps\mesh_%d_1" % i
     result[i] = test(alg, graph)
     graph.draw()
     plt.show()

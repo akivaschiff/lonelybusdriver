@@ -1,45 +1,11 @@
 
-
 import networkx
-import matplotlib
-import json
-
-graph2 = {
-    "lines" : 2,
-    "stations" : [
-        ["name1", 1, 0],
-        ["name2", 2, 0],
-        ["name3", 3, 0],
-        ["name4", 4, 0],
-        ["name5", 5, 0],
-        ["name6", 6, 0],
-
-    ],
-    "roads" : [
-        ["name1", "name2"],
-        ["name2", "name3"],
-        ["name3", "name4"],
-        ["name4", "name5"],
-        ["name5", "name6"],
-    ],
-    "goal" : "name3",
-    "passengers": [
-        ["name1", "name2"]
-    ]
-}
-
-with open("map1.txt", "w") as map_file:
-    json.dump(graph2, map_file)
-
-
-
-# In[121]:
-
 import math
 import json 
 
+
 class CityMap:
-    
+
     COLORS = ['r', 'g', 'b', 'y', 'o']
     
     def __init__(self, map_file):
@@ -51,12 +17,17 @@ class CityMap:
             self.map_file = json.load(temp_map)
         self._read_nodes()
         self._read_edges()
-        self.final_station = self.map_file["goal"]
         self.number_of_busses = self.map_file["lines"]
-        self.routes = {i : [] for i in range(1, self.number_of_busses + 1)}
+        self.routes = {i: [] for i in range(1, self.number_of_busses + 1)}
         self.passengers = self.map_file["passengers"]
         self.map_weight = self.get_total_weight()
-        
+        self._calculate_nodes_size()
+
+    def _calculate_nodes_size(self):
+        self.nodes_size = {v: 0 for v in self.g.nodes()}
+        for s, d in self.passengers:
+            self.nodes_size[s] += 1
+
     def _read_nodes(self):
         self.labels = {}
         self.pos = {}
@@ -78,7 +49,9 @@ class CityMap:
         return edge_list
     
     def draw(self):
-        networkx.draw_networkx_nodes(self.g, self.pos)
+        networkx.draw_networkx_nodes(self.g, self.pos,
+                                     node_size=[300 + 300*self.nodes_size[v] for v in self.g.nodes()],
+                                     node_color=["red" if self.nodes_size[v] else "grey" for v in self.g.nodes()])
         networkx.draw_networkx_edges(self.g, self.pos)
         networkx.draw_networkx_labels(self.g, self.pos, labels=self.labels)
         networkx.draw_networkx_edge_labels(self.g, self.pos, edge_labels=self.edges_labels)

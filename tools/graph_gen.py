@@ -59,7 +59,11 @@ def create_star_graph(n):
 
 
 def create_random_graph(n):
-    raise NotImplemented()
+    g = networkx.binomial_graph(n, 0.5)
+    while not networkx.is_connected(g):
+        g = networkx.binomial_graph(n, 0.5)
+    return g.nodes(), g.edges()
+
 
 def create_grid2d_graph(n):
     assert n > 2
@@ -67,12 +71,19 @@ def create_grid2d_graph(n):
     return g.nodes(), g.edges()
 
 
-def wrap_graph_to_VRP(graph, goal, n_busses, a=0, b=100):
+def wrap_graph_to_VRP(graph, goal, n_busses, a=0, b=100, n_passengers=100):
     assert n_busses > 0
     V, E = graph
     stations = [get_random_node_position(v, a, b) for v in V]
     roads = [[str(v1), str(v2)] for v1, v2 in E]
-    passengers = [[str(v), str(goal-1)] for v in V if v != goal-1]
+    passengers = []
+    for i in range(len(V) / 2):
+        src, dst = 0, 0
+        while src == dst:
+            src = random.choice(V)
+            dst = random.choice(V)
+        passengers.append([str(src), str(dst)])
+
     return {
         "lines": n_busses,
         "stations": stations,
