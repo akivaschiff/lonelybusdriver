@@ -38,11 +38,13 @@ def parse_map(map_name):
 	return TransportNetwork, demand
 
 def main(map_name, show = True):
-	TransportNetwork, demand = parse_map(map_name)
+	transportNetwork, demand = parse_map(map_name)
 
 	if show == True:
-		positions = nx.get_node_attributes(TransportNetwork, 'pos')
-		nx.draw(TransportNetwork, positions, node_size = 300)
+		positions = nx.get_node_attributes(transportNetwork, 'pos')
+		nx.draw(transportNetwork, positions, node_size = 300)
+		labels = {n:n for n in transportNetwork.nodes()}
+		nx.draw_networkx_labels(transportNetwork, positions, labels=labels)
 		plt.show()
 
 if __name__ == '__main__':
