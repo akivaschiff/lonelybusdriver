@@ -7,7 +7,6 @@ def generateRouteset(transportNetwork, num_routes, max_len, min_len):
 	routeset = Routeset(num_routes, transportNetwork)
 	for route_num in range(num_routes):
 		route_len = random.randint(min_len, max_len)
-		print route_len, min_len,max_len
 		if route_num == 0:
 			added_node = random.choice(transportNetwork.nodes())
 		else:
@@ -18,7 +17,6 @@ def generateRouteset(transportNetwork, num_routes, max_len, min_len):
 		reverses = 0
 		while (current_len <= route_len) and (reverses < 2):
 			unused = [node for node in transportNetwork.neighbors(added_node) if node not in routeset.routes[route_num]]
-			print route_num, reverses, unused
 			if unused:
 				added_node = random.sample(unused,1)[0]
 				routeset.add_stop(route_num, added_node)
@@ -29,7 +27,6 @@ def generateRouteset(transportNetwork, num_routes, max_len, min_len):
 				# select the last node in the newly reverse route
 				added_node = routeset.get_last_stop(route_num)
 				reverses += 1
-	routeset.show()
 
 	n = len(transportNetwork.nodes())
 	if len(chosen) < n:
@@ -54,10 +51,10 @@ def repair(routeset, chosen, transportNetwork, num_routes, max_len, min_len):
 			selected = random.choice(to_add)
 		else:
 			routeset.reverse(index)
-			to_add_back = [node for node in transportNetwork.neighbors(routeset.routes[index][-1]) if node not in chosen and node not in route]
+			to_add_back = [node for node in transportNetwork.neighbors(routeset.get_last_stop(index)) if node not in chosen and node not in route]
 			if to_add_back:
 				selected = random.choice(to_add_back)
-		if selected:
+		if selected is not None:
 			routeset.add_stop(index, selected)
 			chosen.add(selected)
 		else:
