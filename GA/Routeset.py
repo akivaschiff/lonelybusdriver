@@ -18,6 +18,8 @@ class Routeset(object):
 		self.routes[route_num].reverse()
 	def get_routes(self):
 		return self.routes
+	def get_last_stop(self, route_num):
+		return self.routes[route_num][-1]
 	def add_route(self, route):
 		self.routes.append(copy.copy(route))
 	def calc_route_length(self, route):
