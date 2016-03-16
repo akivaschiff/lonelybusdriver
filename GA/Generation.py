@@ -1,4 +1,4 @@
-import Routeset
+from Routeset import Routeset
 import GenerateRouteset
 import random
 import itertools
@@ -6,33 +6,46 @@ import itertools
 def crossover(parent1, parent2, num_routes, transportNetwork):
 	offspring = Routeset(num_routes, transportNetwork)
 	switch_parent = itertools.cycle([parent2, parent1])
-	offspring.add_route(random.choice(parent1.get_routes()))
+	seed_route = random.choice(parent1.get_routes())
+	# keep a set of all nodes already visited by offspring
+	visited_nodes = set(seed_route)
+	offspring.routes[0] = seed_route
 	current_parent = next(switch_parent)
-	for route in range(num_routes - 1):
-		new_route = choose_route(current_parent, offspring)
-		offspring.add_route(new_route)
+	for r in range(1, num_routes):
+		new_route = choose_route(current_parent, visited_nodes)
+		if new_route == []:
+			print "NO ROUTE CHOSEN!!! THIS SHOULD NEVER HAPPEN!"
+			return False
+		visited_nodes.update(new_route)
+		offspring.routes[r] = new_route
 		current_parent = next(switch_parent)
 	return offspring
-		
-def choose_route(parent, offspring):
-	#create a set of all visited nodes so far in offspring
-	visited_nodes = set([node for route in offspring.get_routes for node in route])
-	#choose among parent's routes only those that intersect with visited nodes
-	possible_new_routes = [route for route in parent.get_routes() if set(route).intersection(visited_nodes)]
-	#compute value for each route (percetage of new nodes in route)
-	routes_value = [len(set(route).difference(visited_nodes))/len(route) for route in possible_new_routes]
-	#return best route
-	return possible_new_routes.index(max(routes_value))
-	
+
+def choose_route(parent, visited_nodes):
+	best_value = 0
+	best_route = []
+	for i, route in enumerate(parent.get_routes()):
+		# calculate the intersection of the route with the visited nodes of the offspring
+		intersection = set(route).intersection(visited_nodes)
+		# if there is no intersection - just carry on
+		if len(intersection) == 0:
+			continue
+		#compute value for each route (percetage of new nodes in route)
+		value = (len(route) - len(intersection)) / float(len(route))
+		if value > best_value:
+			best_value, best_route = value, route
+		elif value == best_value:
+			best_route = random.choice([route, best_route])
+
+	return best_route
+
 def mutation(routeset, num_routes, max_len):
 	num_nodes_to_change = random.randint(1, num_routes*(max_len/2))
 	mut = random.choice([add_nodes,delete_nodes])
 	return mut(routeset, num_nodes_to_change)
-	
+
 def add_nodes(routeset, num_nodes_to_change):
 	pass
-	
+
 def delete_nodes(routeset, num_nodes_to_change):
 	pass
-	
-	
