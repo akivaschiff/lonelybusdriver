@@ -28,6 +28,11 @@ class Routeset(object):
 		return sum([self.transportNetwork.edge[route[j]][route[j+1]]['weight'] for j in range(len(route)-1)])
 	def get_operator_cost(self):
 		return sum([self.calc_route_length(route) for route in self.routes])
+	def calc_scores(self, demand, dij_sum):
+		self.score_passengers = self.get_passenger_cost(demand) / dij_sum
+		self.score_operator = self.get_operator_cost()
+	def get_scores(self):
+		return self.score_passengers, self.score_operator
 	def get_edges(self, route):
 		return [(route[j],route[j+1]) for j in range(len(route)-1)]
 	def _generate_name(self, node, inc):
