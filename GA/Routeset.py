@@ -61,7 +61,7 @@ class Routeset(object):
 				transitNetwork.add_edge(a, b, weight = consts.transfer_penalty)
 
 		# run all pairs shortest path algorithm
-		all_pairs = nx.algorithms.all_pairs_shortest_path_length(transitNetwork)
+		all_pairs = nx.algorithms.all_pairs_dijkstra_path_length(transitNetwork, weight = "weight")
 
 		# now calculate the sum of all the pairs for the minimum where we have transit edges
 		total_sum = 0
@@ -85,7 +85,9 @@ class Routeset(object):
 		positions = nx.get_node_attributes(self.transportNetwork, 'pos')
 		nx.draw(self.transportNetwork, positions, node_size = 300)
 		labels = {n:n for n in self.transportNetwork.nodes()}
+		edges_labels = {edge:self.transportNetwork.get_edge_data(*edge)["weight"] for edge in self.transportNetwork.edges()}
 		nx.draw_networkx_labels(self.transportNetwork, positions, labels=labels)
+		nx.draw_networkx_edge_labels(self.transportNetwork, positions, edge_labels=edges_labels)
 		for i in range(len(self.routes)):
 			nx.draw_networkx_edges(self.transportNetwork, positions, edgelist = self.get_edges(self.routes[i]), alpha = 0.2, edge_color = consts.COLORS[i], width = 8)
 		plt.show()
