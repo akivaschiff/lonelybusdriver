@@ -12,7 +12,7 @@ def parse_map(map_name):
 	coords = file(files[0],'r').read().splitlines()
 	for count in range(int(coords[0])):
 		x,y = [float(i) for i in coords[count+1].strip().split()]
-		TransportNetwork.add_node(count, pos = (x,y))
+		TransportNetwork.add_node(count+1, pos = (x,y))
 
 	# read traveltimes - edges
 	lines = [line for line in file(files[2],'r').read().splitlines() if line]
@@ -20,7 +20,7 @@ def parse_map(map_name):
 		columns = line.split()
 		for j, col in enumerate(columns):
 			if col != '0' and col != 'Inf':
-				TransportNetwork.add_edge(i,j,weight = float(col))
+				TransportNetwork.add_edge(i+1,j+1,weight = float(col))
 
 	# read demand
 	demand = {}
@@ -31,7 +31,7 @@ def parse_map(map_name):
 			num = float(col)
 			if num == 0 or i > j:
 				continue
-			demand[(i,j)] = num # consider duplicating this to easily  access both directions (i,j) = (j,i)
+			demand[(i+1,j+1)] = num # consider duplicating this to easily  access both directions (i,j) = (j,i)
 
 	#print TransportNetwork.edges(data = True)
 	return TransportNetwork, demand
