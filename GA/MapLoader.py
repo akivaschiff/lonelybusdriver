@@ -11,11 +11,10 @@ def parse_map(map_name):
 
 	coords = file(files[0],'r').read().splitlines()
 	for count in range(int(coords[0])):
-		x,y = [float(i) for i in coords[count+1].split(' ')]
+		x,y = [float(i) for i in coords[count+1].strip().split()]
 		TransportNetwork.add_node(count, pos = (x,y))
 
-
-	# read traveltimes
+	# read traveltimes - edges
 	lines = [line for line in file(files[2],'r').read().splitlines() if line]
 	for i, line in enumerate(lines):
 		columns = line.split()

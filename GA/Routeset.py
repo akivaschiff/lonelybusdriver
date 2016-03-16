@@ -2,6 +2,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from collections import Counter
 import itertools
+import pprint
 import copy
 import consts
 import random
@@ -25,6 +26,10 @@ class Routeset(object):
 		return sum([self.calc_route_length(route) for route in self.routes])
 	def get_edges(self, route):
 		return [(route[j],route[j+1]) for j in range(len(route)-1)]
+	def _generate_name(self, node, inc):
+		return '%s_%s' % (node, chr(97 + inc))
+	def _generate_names(self, node, number):
+		return [self._generate_name(node, inc) for inc in range(number)]
 	def get_passenger_cost(self, demand):
 		# record edges to duplicate
 		counter = Counter()
@@ -33,59 +38,46 @@ class Routeset(object):
 		duplicates = {i:j for i,j in counter.iteritems() if j > 1}
 		incrementor = {i:0 for i,j in duplicates.iteritems()}
 
-		# create new graph
+		# create new graph by duplicating edges that appear a few times
 		transitNetwork = nx.Graph()
 		for route in self.routes:
 			for a, b in self.get_edges(route):
-				edge = (str(a), str(b))
+				e1, e2 = str(a), str(b)
 				if a in incrementor:
-					edge = (str(a) + '_%s' % (chr(97 + incrementor[a])), edge[1])
+					e1 = self._generate_name(e1, incrementor[a])
 				if b in incrementor:
-					edge = (edge[0], str(b) + '_%s' % (chr(97 + incrementor[b])))
-				transitNetwork.add_edge(*edge, weight = self.transportNetwork.edge[a][b]['weight'])
+					e2 = self._generate_name(e2, incrementor[b])
+				transitNetwork.add_edge(e1, e2, weight = self.transportNetwork.edge[a][b]['weight'])
 			for r in route:
 				if r in incrementor:
 					incrementor[r] += 1
 
-		# create transit edges
+		# create transit edges between all edges of similar suffix
 		for node, appearances in duplicates.iteritems():
-			split_nodes = [str(node) + '_' + chr(97 + i) for i in range(appearances)]
+			split_nodes = self._generate_names(str(node), appearances)
 			for a, b in itertools.combinations(split_nodes, 2):
 				transitNetwork.add_edge(a, b, weight = consts.transfer_penalty)
-
-		old_positions = nx.get_node_attributes(self.transportNetwork, 'pos')
-		positions = {n : old_positions[float(n.split('_')[0])] for n in transitNetwork.nodes()}
-		nx.draw(transitNetwork, positions, node_size = 800)
-		labels = {n:n for n in transitNetwork.nodes()}
-		nx.draw_networkx_labels(transitNetwork, positions, labels=labels)
-		#plt.show()
 
 		# run all pairs shortest path algorithm
 		all_pairs = nx.algorithms.all_pairs_shortest_path_length(transitNetwork)
 
-		# now calculate the sum of all the pairs
+		# now calculate the sum of all the pairs for the minimum where we have transit edges
 		total_sum = 0
 		for source, dest in demand:
-			if source > dest:
-				dest, source = source, dest
 			a, b = str(source), str(dest)
+			transfer_time = 0
 			if source not in duplicates and dest not in duplicates:
-				total_sum += demand[(source,dest)] * all_pairs[a][b]
+				transfer_time = all_pairs[a][b]
 			elif source not in duplicates and dest in duplicates:
-				split_nodes = [str(b) + '_' + chr(97 + i) for i in range(duplicates[dest] - 1)]
-				total_sum += demand[(source,dest)] * min(all_pairs[a][c] for c in split_nodes)
+				transfer_time = min(all_pairs[a][c] for c in self._generate_names(b, duplicates[dest]))
 			elif source in duplicates and dest not in duplicates:
-				split_nodes = [str(a) + '_' + chr(97 + i) for i in range(duplicates[source] - 1)]
-				total_sum += demand[(source,dest)] * min(all_pairs[c][b] for c in split_nodes)
+				transfer_time = min(all_pairs[c][b] for c in self._generate_names(a, duplicates[source]))
 			else:
-				# both are duplicated! arghhh!
-				split_nodes_a = [str(a) + '_' + chr(97 + i) for i in range(duplicates[dest] - 1)]
-				split_nodes_b = [str(b) + '_' + chr(97 + i) for i in range(duplicates[source] - 1)]
-				total_sum += demand[(source,dest)] * min(all_pairs[c][d] for c, d in itertools.product(split_nodes_a, split_nodes_b))
+				split_nodes_a = self._generate_names(a, duplicates[source])
+				split_nodes_b = self._generate_names(b, duplicates[dest])
+				transfer_time = min(all_pairs[c][d] for c, d in itertools.product(split_nodes_a, split_nodes_b))
+			total_sum += demand[(source,dest)] * transfer_time
 		return total_sum
-
-
-
 
 	def show(self):
 		positions = nx.get_node_attributes(self.transportNetwork, 'pos')
