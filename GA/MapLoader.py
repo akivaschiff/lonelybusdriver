@@ -34,7 +34,9 @@ def parse_map(map_name):
 			demand[(i+1,j+1)] = num # consider duplicating this to easily  access both directions (i,j) = (j,i)
 
 	#print TransportNetwork.edges(data = True)
-	return TransportNetwork, demand
+	setattr(TransportNetwork, "demand", demand)
+	setattr(TransportNetwork, "dij_sum", float(sum(demand.values())))
+	return TransportNetwork
 
 def main(map_name, show = True):
 	transportNetwork, demand = parse_map(map_name)

@@ -12,6 +12,7 @@ class Routeset(object):
 		self.routes = [[] for _ in range(num_routes)]
 		#self._lengths = [0 for _ in range(num_routes)]
 		self.transportNetwork = transportNetwork # save a pointer to the original graph
+		self.scores = {}
 	def add_stop(self, route_num, node):
 		self.routes[route_num].append(node)
 	def reverse(self, route_num):
@@ -26,20 +27,27 @@ class Routeset(object):
 		self.routes.append(copy.copy(route))
 	def calc_route_length(self, route):
 		return sum([self.transportNetwork.edge[route[j]][route[j+1]]['weight'] for j in range(len(route)-1)])
-	def get_operator_cost(self):
+	def calc_operator_cost(self):
 		return sum([self.calc_route_length(route) for route in self.routes])
-	def calc_scores(self, demand, dij_sum):
-		self.score_passengers = self.get_passenger_cost(demand) / dij_sum
-		self.score_operator = self.get_operator_cost()
+	def calc_scores(self):
+		self.scores['passengers'] = self.calc_passenger_cost()
+		self.scores['operator'] = self.calc_operator_cost()
 	def get_scores(self):
-		return self.score_passengers, self.score_operator
+		return self.scores
+	def dominates(self, other):
+		return all(self.scores[k] >= other.scores[k] for k in self.scores.keys())
 	def get_edges(self, route):
 		return [(route[j],route[j+1]) for j in range(len(route)-1)]
+	def __eq__(self, other):
+		# this is a little hacky but a fast way for comparing two solutions
+		return all(self.scores[k] == other.scores[k] for k in self.scores.keys())
 	def _generate_name(self, node, inc):
 		return '%s_%s' % (node, chr(97 + inc))
 	def _generate_names(self, node, number):
 		return [self._generate_name(node, inc) for inc in range(number)]
-	def get_passenger_cost(self, demand):
+	def __repr__(self):
+		return str(self.scores) + "\n" + str(self.routes) + '\n'
+	def calc_passenger_cost(self):
 		# record edges to duplicate
 		counter = Counter()
 		for route in self.routes:
@@ -72,7 +80,7 @@ class Routeset(object):
 
 		# now calculate the sum of all the pairs for the minimum where we have transit edges
 		total_sum = 0
-		for source, dest in demand:
+		for source, dest in self.transportNetwork.demand:
 			a, b = str(source), str(dest)
 			transfer_time = 0
 			if source not in duplicates and dest not in duplicates:
@@ -85,8 +93,8 @@ class Routeset(object):
 				split_nodes_a = self._generate_names(a, duplicates[source])
 				split_nodes_b = self._generate_names(b, duplicates[dest])
 				transfer_time = min(all_pairs[c][d] for c, d in itertools.product(split_nodes_a, split_nodes_b))
-			total_sum += demand[(source,dest)] * transfer_time
-		return total_sum
+			total_sum += self.transportNetwork.demand[(source,dest)] * transfer_time
+		return total_sum / float(self.transportNetwork.dij_sum)
 
 	def show(self):
 		positions = nx.get_node_attributes(self.transportNetwork, 'pos')

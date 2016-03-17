@@ -1,17 +1,18 @@
 from Routeset import Routeset
+import consts
 import GenerateRouteset
 import random
 import itertools
 
-def crossover(parent1, parent2, num_routes, transportNetwork):
-	offspring = Routeset(num_routes, transportNetwork)
+def crossover(parent1, parent2, transportNetwork):
+	offspring = Routeset(consts.num_routes, transportNetwork)
 	switch_parent = itertools.cycle([parent2, parent1])
 	seed_route = random.choice(parent1.get_routes())
 	# keep a set of all nodes already visited by offspring
 	visited_nodes = set(seed_route)
 	offspring.routes[0] = seed_route
 	current_parent = next(switch_parent)
-	for r in range(1, num_routes):
+	for r in range(1, consts.num_routes):
 		new_route = choose_route(current_parent, visited_nodes)
 		if new_route == []:
 			print "NO ROUTE CHOSEN!!! THIS SHOULD NEVER HAPPEN!"
