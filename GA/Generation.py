@@ -40,13 +40,69 @@ def choose_route(parent, visited_nodes):
 
 	return best_route
 
-def mutation(routeset, num_routes, max_len):
+def mutation(routeset, num_routes, max_len, min_len):
 	num_nodes_to_change = random.randint(1, num_routes*(max_len/2))
 	mut = random.choice([add_nodes,delete_nodes])
-	return mut(routeset, num_nodes_to_change)
+	return mut(routeset, num_routes, num_nodes_to_change, max_len, min_len)
 
-def add_nodes(routeset, num_nodes_to_change):
-	pass
+def add_nodes(routeset, num_routes, num_nodes_to_add, max_len, min_len):
+	#constraints: route doesn't pass max_len, no return to same node twice in route
+	added_nodes = 0
+	tried = []
+	while (added_nodes < num_nodes_to_add) and (len(tried) < num_routes):
+		# select a route to expand
+		routes_to_expand = [(i,r) for i,r in enumerate(routeset.routes) if len(r) < max_len and i not in tried]
+		if not routes_to_expand:
+			return False
+		index, route = random.choice(routes_to_expand)
 
-def delete_nodes(routeset, num_nodes_to_change):
-	pass
+		# try adding nodes to either end until reached max_len
+		while (len(routeset.get_route(index)) < max_len) and (len(tried) < num_routes):
+			to_add = [node for node in transportNetwork.neighbors(routeset.get_last_stop(index)) if node not in route]
+			selected = None
+			if to_add:
+				selected = random.choice(to_add)
+			else:
+				routeset.reverse(index)
+				to_add_back = [node for node in transportNetwork.neighbors(routeset.get_last_stop(index)) if node not in route]
+				if to_add_back:
+					selected = random.choice(to_add_back)
+			if selected is not None:
+				routeset.add_stop(index, selected)
+				added_nodes += 1
+			else:
+				# didn't manage to add any to this route - give up on it
+				tried.append(index)
+				break
+	return True	
+
+def delete_nodes(routeset, num_routes, num_nodes_to_delete, max_len, min_len):
+	#constraints: route doesn't pass min_len, graph still conected
+	deleted_nodes = 0
+	tried = []
+	while (deleted_nodes < num_nodes_to_delete) and (len(tried) < num_routes):
+		# select a route to trim
+		routes_to_trim = [(i,r) for i,r in enumerate(routeset.routes) if len(r) > min_len and i not in tried]
+		if not routes_to_trim:
+			return False
+		index, route = random.choice(routes_to_trim)
+
+		# try deleting nodes from either end until reached min_len
+		while len(routeset.get_route(index)) > min_len:
+			to_delete = routeset.get_last_stop(index)
+			other_nodes = routeset.get_routes()
+			other_nodes.pop(index)
+			other_nodes = [node for route in other_nodes for node in route]
+			if to_delete not in other_nodes:
+				routeset.reverse(index)
+				to_delete = routeset.get_last_stop(index)
+				if to_delete not in other_nodes:
+					to_delete = None
+			if to_delete is not None:
+				routeset.delete_stop(index, to_delete)
+				deleted_nodes += 1
+			else:
+				# didn't manage to trim this route - give up on it
+				tried.append(index)
+				break
+	return True
