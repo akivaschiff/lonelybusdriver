@@ -34,7 +34,7 @@ def generateRouteset(transportNetwork, num_routes, max_len, min_len):
 			return routeset
 	return []
 
-def repair(routeset, chosen, transportNetwork, max_len, min_len):
+def repair(routeset, chosen, transportNetwork, max_len = consts.max_route_len, min_len = consts.min_route_len):
 	n = len(transportNetwork.nodes())
 	tried = []
 	while len(chosen) < n:
