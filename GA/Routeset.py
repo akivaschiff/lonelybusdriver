@@ -19,12 +19,14 @@ class Routeset(object):
 		self.routes[route_num].reverse()
 	def get_routes(self):
 		return self.routes
-	def get_route(route_num):
+	def get_route(self, route_num):
 		return self.routes[route_num]
 	def get_last_stop(self, route_num):
 		return self.routes[route_num][-1]
 	def add_route(self, route):
 		self.routes.append(copy.copy(route))
+	def delete_last_stop(self, route_num):
+		self.routes[route_num].pop(-1)
 	def calc_route_length(self, route):
 		return sum([self.transportNetwork.edge[route[j]][route[j+1]]['weight'] for j in range(len(route)-1)])
 	def calc_operator_cost(self):

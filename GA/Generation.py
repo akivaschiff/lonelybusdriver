@@ -88,18 +88,21 @@ def delete_nodes(routeset, num_routes, num_nodes_to_delete, max_len, min_len):
 		index, route = random.choice(routes_to_trim)
 
 		# try deleting nodes from either end until reached min_len
+		other_nodes = set([node for i, route in enumerate(routeset.get_routes()) if i != index for node in route])
 		while len(routeset.get_route(index)) > min_len:
 			to_delete = routeset.get_last_stop(index)
-			other_nodes = routeset.get_routes()
-			other_nodes.pop(index)
-			other_nodes = [node for route in other_nodes for node in route]
+			# check minimal connectivity between other routes
+			if len(set(routeset.get_route(index)).intersection(other_nodes)) == 1:
+				tried.append(index)
+				break
+			# check connectivity of entire graph
 			if to_delete not in other_nodes:
 				routeset.reverse(index)
 				to_delete = routeset.get_last_stop(index)
 				if to_delete not in other_nodes:
 					to_delete = None
 			if to_delete is not None:
-				routeset.delete_stop(index, to_delete)
+				routeset.delete_last_stop(index)
 				deleted_nodes += 1
 			else:
 				# didn't manage to trim this route - give up on it
