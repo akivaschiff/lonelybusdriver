@@ -58,13 +58,13 @@ def add_nodes(routeset, num_routes, num_nodes_to_add, max_len, min_len):
 
 		# try adding nodes to either end until reached max_len
 		while (len(routeset.get_route(index)) < max_len) and (len(tried) < num_routes):
-			to_add = [node for node in transportNetwork.neighbors(routeset.get_last_stop(index)) if node not in route]
+			to_add = [node for node in routeset.transportNetwork.neighbors(routeset.get_last_stop(index)) if node not in route]
 			selected = None
 			if to_add:
 				selected = random.choice(to_add)
 			else:
 				routeset.reverse(index)
-				to_add_back = [node for node in transportNetwork.neighbors(routeset.get_last_stop(index)) if node not in route]
+				to_add_back = [node for node in routeset.transportNetwork.neighbors(routeset.get_last_stop(index)) if node not in route]
 				if to_add_back:
 					selected = random.choice(to_add_back)
 			if selected is not None:
@@ -74,7 +74,7 @@ def add_nodes(routeset, num_routes, num_nodes_to_add, max_len, min_len):
 				# didn't manage to add any to this route - give up on it
 				tried.append(index)
 				break
-	return True	
+	return True
 
 def delete_nodes(routeset, num_routes, num_nodes_to_delete, max_len, min_len):
 	#constraints: route doesn't pass min_len, graph still conected
