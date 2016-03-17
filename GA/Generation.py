@@ -40,7 +40,7 @@ def choose_route(parent, visited_nodes):
 
 	return best_route
 
-def mutation(routeset, num_routes, max_len, min_len):
+def mutate(routeset, num_routes, max_len, min_len):
 	num_nodes_to_change = random.randint(1, num_routes*(max_len/2))
 	mut = random.choice([add_nodes,delete_nodes])
 	return mut(routeset, num_routes, num_nodes_to_change, max_len, min_len)

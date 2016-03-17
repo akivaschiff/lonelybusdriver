@@ -37,7 +37,7 @@ class Routeset(object):
 	def get_scores(self):
 		return self.scores
 	def dominates(self, other):
-		return all(self.scores[k] >= other.scores[k] for k in self.scores.keys())
+		return all(self.scores[k] <= other.scores[k] for k in self.scores.keys())
 	def get_edges(self, route):
 		return [(route[j],route[j+1]) for j in range(len(route)-1)]
 	def __eq__(self, other):
