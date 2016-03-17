@@ -39,13 +39,31 @@ def choose_route(parent, visited_nodes):
 
 	return best_route
 
-def mutation(routeset, num_routes, max_len):
+def mutation(routeset, num_routes, max_len, min_len):
 	num_nodes_to_change = random.randint(1, num_routes*(max_len/2))
 	mut = random.choice([add_nodes,delete_nodes])
-	return mut(routeset, num_nodes_to_change)
+	return mut(routeset, num_routes, num_nodes_to_change, max_len, min_len)
 
-def add_nodes(routeset, num_nodes_to_change):
-	pass
+def add_nodes(routeset, num_routes, num_nodes_to_add, max_len, min_len):
+	#constraints: route doesn't pass max_len, no return to same node twice in route
+	nodes_added = 0
+	routes_ind = random.sample(range(1, num_routes), num_nodes_to_add) 	# for choosing routes w/o replacement
+	choose_route = 0
+	while (nodes_added <= num_nodes_to_add) and (choose_route <= num_routes)):
+		route_num = routes_ind[choose_route]
+		while len(routeset.get_route(route_num)) < max_len:
+			route = routeset.get_route(route_num)
+			neighbors = set(transportNetwork.neighbors(route[-1]))
+			possible_neighbors = neighbors.difference(set(route))
+			if len(possible_neighbors) == 0:	#route exausted
+				choose_route += 1	#continue to next route
+				break
+			new_node = random.sample(possible_neighbors, 1)[0]
+			routeset.add_stop(route_num, new_node)
+			nodes_added += 1
+		choose_route += 1
+		
 
-def delete_nodes(routeset, num_nodes_to_change):
+def delete_nodes(routeset, num_routes, num_nodes_to_add, max_len, min_len):
+	#constraints: route doesn't pass min_len, graph still conected, 
 	pass
