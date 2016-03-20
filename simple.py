@@ -1,17 +1,21 @@
-import sys
 import time
 import util
 import pprint
 import problems
 import CityMap
 import matplotlib.pyplot as plt
+from mesh_heuristics import *
+
 
 def nullHeuristic(state, problem=None):
   """
   A heuristic function estimates the cost from the current state to the nearest
   goal in the provided SearchProblem.  This heuristic is trivial.
+  CONSISTENT
   """
   return 0
+
+
 
 def aStarSearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest combined cost and heuristic first."
@@ -24,13 +28,11 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     if current_state in seen:
       continue
 
-    #print current_state, current_state.get_state_weight()
     if problem.isGoalState(current_state):
-        print current_state.get_state_weight()
         return current_state
 
     for state in (s for s in problem.getSuccessors(current_state) if s not in seen):
-      state_cost = state.get_state_weight() + heuristic(state, problem)
+      state_cost = problem.getStateCost(state) + heuristic(state, problem)
       nodes.push(state, state_cost)
 
     seen.add(current_state)
@@ -38,48 +40,61 @@ def aStarSearch(problem, heuristic=nullHeuristic):
   return []
 
 
-def test(alg, cityMap):
+def test(cityMap, h):
   start_time = time.time()
-  problem = problems.VRPProblem(cityMap)
-  if alg == 'astar':
-    final_route = aStarSearch(problem)
-  else:
-    print 'unknown algorithm'
-    return
-
+  problem = problems.BusOperatorVRPProblem(cityMap)
+  final_route = aStarSearch(problem, h)
+  #import pdb; pdb.set_trace()
   end_time = time.time() - start_time
   print "==============================================="
   if not final_route:
     print "NO SOLUTION!"
-    return 0
+    return -1
   else:
     print "SOLUTION:"
     pprint.pprint(final_route)
 
-  print 'NODES EXPANDED: %d' % (problem.expanded)
-  print 'TIME: %d' % (end_time)
   print "==============================================="
   for busnum, bus in enumerate(final_route.busses):
     problem.cityMap.set_route(busnum+1, bus.route)
-  return (end_time, final_route.get_state_weight(), problem.expanded)
 
-def run_simple_test(alg):
-  NUMBER_OF_TESTS = 10
-  result = {}
-  for i in range(1, 2):
-    graph = CityMap.CityMap(r"maps\random_9_1")
-    print r"maps\mesh_%d_1" % i
-    result[i] = test(alg, graph)
-    graph.draw()
-    plt.show()
-  return result
+  #print problem.tmp_storage["cache"]
+  print end_time, final_route.get_state_cost(), problem.expanded
+  #assert final_route.get_state_cost() >= max(problem.tmp_storage["cache"])
+  return end_time, final_route.get_state_cost(), problem.expanded
+
+def run_simple_test():
+  candidates = [total_destination_left_heuristic,
+                satisfied_customers,
+                onboard_passengers,
+                distance_waiting_ratio,
+                combined_total_destination_onboard,
+                nullHeuristic
+                ]
 
 
-def main(alg = 'bfs'):
-  #graph = CityMap.CityMap("maps\\5ring3bus.txt")
-  print run_simple_test(alg)
+  candidates = [nullHeuristic]
+  results = {}
+  for h in candidates:
+    NUMBER_OF_TESTS = 4
+    tmp_result = {}
+    for i in range(3, NUMBER_OF_TESTS):
+        graph = CityMap.CityMap(r"maps\grid_%d_1" % i)
+        print r"maps\mesh_%d_1" % i
+        start_time = time.time()
+        end_time = time.time() - start_time
+        tmp_result[i] = test(graph, h)
+        graph.draw()
+        plt.figure(3, figsize=(12,12))
+        plt.savefig(r"results\mesh_%d_1_%s.png" % (i, "fw"))
+        plt.clf()
+        results[h.__name__] = tmp_result
+    print tmp_result
+  print results
 
+
+def main():
+  print run_simple_test()
 
 if __name__ == '__main__':
-  alg_name = sys.argv[1]
-  main(alg_name)
+  main()

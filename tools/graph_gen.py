@@ -66,9 +66,33 @@ def create_random_graph(n):
 
 
 def create_grid2d_graph(n):
-    assert n > 2
-    g = networkx.grid_2d_graph(n, n-2)
+    g = networkx.grid_2d_graph(n, n)
     return g.nodes(), g.edges()
+
+
+def create_random_passengers(V, pass_number):
+    res = []
+    for i in range(pass_number):
+        v, u = random.sample(V, 2)
+        res.append([str(u), str(v)])
+    return res
+
+
+def create_passengers_in_every_station(V, pass_number):
+    return [[str(u), str(len(V)-1)] for u in V]
+
+
+def wrap_grid_graph(V, E, n_busses, pass_number):
+    stations = [[str(i), V[i][0], V[i][1]] for i in range(len(V))]
+    stations_map = {str(v): str(i) for i, v in enumerate(V)}
+    roads = [[stations_map[str(u)], stations_map[str(v)]] for u, v in E]
+
+    return {
+        "lines": n_busses,
+        "stations": stations,
+        "roads": roads,
+        "passengers": [[stations_map[u], stations_map[v]] for u, v in create_random_passengers(V, pass_number)]
+    }
 
 
 def wrap_graph_to_VRP(graph, goal, n_busses, a=0, b=100, n_passengers=100):
@@ -76,19 +100,12 @@ def wrap_graph_to_VRP(graph, goal, n_busses, a=0, b=100, n_passengers=100):
     V, E = graph
     stations = [get_random_node_position(v, a, b) for v in V]
     roads = [[str(v1), str(v2)] for v1, v2 in E]
-    passengers = []
-    for i in range(len(V) / 2):
-        src, dst = 0, 0
-        while src == dst:
-            src = random.choice(V)
-            dst = random.choice(V)
-        passengers.append([str(src), str(dst)])
 
     return {
         "lines": n_busses,
         "stations": stations,
         "roads": roads,
-        "passengers": passengers
+        "passengers": create_passengers_in_every_station(V)
     }
 
 

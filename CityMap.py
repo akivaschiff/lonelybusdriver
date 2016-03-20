@@ -22,6 +22,20 @@ class CityMap:
         self.passengers = self.map_file["passengers"]
         self.map_weight = self.get_total_weight()
         self._calculate_nodes_size()
+        self._build_nodes_colors()
+
+    def _build_nodes_colors(self):
+        self.nodes_colors = {v: 'grey' for v in self.g.nodes()}
+        for s, d in self.passengers:
+            if self.nodes_colors[s] == "grey" or self.nodes_colors[s] == "red":
+                self.nodes_colors[s] = 'red'
+            else:
+                self.nodes_colors[s] = 'purple'
+
+            if self.nodes_colors[d] == "grey" or self.nodes_colors[s] == "blue":
+                self.nodes_colors[d] = 'blue'
+            else:
+                self.nodes_colors[d] = "purple"
 
     def _calculate_nodes_size(self):
         self.nodes_size = {v: 0 for v in self.g.nodes()}
@@ -39,9 +53,18 @@ class CityMap:
     def _read_edges(self):
         self.edges_labels = {}
         for road in self.map_file["roads"]:
-            self.g.add_edge(*road)
+            self.g.add_edge(*road, weight=self.get_weight(road))
             self.edges_labels[tuple(road)] = int(self.get_weight(road))
-            
+
+    def update(self):
+        to_remove = [e for e in self.edges_labels if e not in self.g.edges()]
+        for e in to_remove:
+            self.edges_labels.pop(e)
+
+        to_remove = [v for v in self.labels if v not in self.g.nodes()]
+        for v in to_remove:
+            self.labels.pop(v)
+
     def _build_edge_list(self, line_number):
         edge_list = []
         for i in range(len(self.routes[line_number])-1):
@@ -51,7 +74,7 @@ class CityMap:
     def draw(self):
         networkx.draw_networkx_nodes(self.g, self.pos,
                                      node_size=[300 + 300*self.nodes_size[v] for v in self.g.nodes()],
-                                     node_color=["red" if self.nodes_size[v] else "grey" for v in self.g.nodes()])
+                                     node_color=[self.nodes_colors[v] for v in self.g.nodes()])
         networkx.draw_networkx_edges(self.g, self.pos)
         networkx.draw_networkx_labels(self.g, self.pos, labels=self.labels)
         networkx.draw_networkx_edge_labels(self.g, self.pos, edge_labels=self.edges_labels)
@@ -59,7 +82,8 @@ class CityMap:
             if not self.routes[route]:
                 continue
             edge_list = self._build_edge_list(route)
-            networkx.draw_networkx_edges(self.g, self.pos, edge_color=CityMap.COLORS[route-1], edgelist=edge_list)
+            networkx.draw_networkx_edges(self.g, self.pos, edge_color=CityMap.COLORS[route-1],
+                                         width=2.0, edgelist=edge_list)
 
     def get_weight(self, edge):
         return CityMap.euclid_distance(self.pos[edge[0]], self.pos[edge[1]])
@@ -82,6 +106,10 @@ class CityMap:
         edge_list = self._build_edge_list(line_number)
         x = [self.get_weight(edge) for edge in edge_list]
         return sum(x)
+
+    def get_route_weight_from_route(self, route):
+        edge_list = [(route[i], route[i+1]) for i in range(len(route)-1)]
+        return sum([self.get_weight(edge) for edge in edge_list])
     
     def euclid_distance_by_name(self, pos1, pos2):
         P1 = self.pos[pos1]
