@@ -6,6 +6,8 @@ import pprint
 import copy
 import consts
 import random
+import math
+from math import sin, cos
 
 class Routeset(object):
 	def __init__(self, num_routes, transportNetwork):
@@ -154,12 +156,47 @@ class Routeset(object):
 		return total_sum / float(self.transportNetwork.dij_sum)
 
 	def show(self):
+		# count multi-edges
+		counter = Counter()
+		for route in self.routes:
+			counter.update(self.get_edges(route))
+			counter.update(self.get_edges(route[::-1]))
+		duplicates = {i:j for i,j in counter.iteritems() if j > 1}
+		incrementor = {i:0 for i,j in duplicates.iteritems()}
+
+		# draw nodes
 		positions = nx.get_node_attributes(self.transportNetwork, 'pos')
-		nx.draw(self.transportNetwork, positions, node_size = 300)
+		nx.draw(self.transportNetwork, positions, node_size = 800, node_color = (1,0,1), edge_alpha = .3)
 		labels = {n:n for n in self.transportNetwork.nodes()}
-		edges_labels = {edge:self.transportNetwork.get_edge_data(*edge)["weight"] for edge in self.transportNetwork.edges()}
 		nx.draw_networkx_labels(self.transportNetwork, positions, labels=labels)
+
+		edges_labels = {edge:self.transportNetwork.get_edge_data(*edge)["weight"] for edge in self.transportNetwork.edges()}
 		#nx.draw_networkx_edge_labels(self.transportNetwork, positions, edge_labels=edges_labels)
+
 		for i in range(len(self.routes)):
-			nx.draw_networkx_edges(self.transportNetwork, positions, edgelist = self.get_edges(self.routes[i]), alpha = 0.2, edge_color = consts.COLORS[i], width = 8)
+			node_and_positions_original = nx.get_node_attributes(self.transportNetwork, 'pos')
+			node_and_positions = nx.get_node_attributes(self.transportNetwork, 'pos')
+			edges = self.get_edges(self.routes[i])
+			for edge in edges:
+				if edge not in duplicates:
+					nx.draw_networkx_edges(self.transportNetwork, node_and_positions_original, \
+					edgelist = [edge], alpha = 0.8, edge_color = consts.COLORS[i], \
+					width = 6)
+				if edge in duplicates:
+					offset = (duplicates[edge] - incrementor[edge] - 1) * 0.07
+					node1, node2 = edge
+					x1, y1 = node_and_positions[node1]
+					x2, y2 = node_and_positions[node2]
+					angle = math.atan((y2 - y1) / (float(x2 - x1) + 0.0001))
+					print edge, offset, angle
+					node_and_positions[node1] = (x1 - sin(angle) * offset, y1 + cos(angle) * offset)
+					node_and_positions[node2] = (x2 - sin(angle) * offset, y2 + cos(angle) * offset)
+					nx.draw_networkx_edges(self.transportNetwork, node_and_positions, \
+					edgelist = [edge], alpha = 0.8, edge_color = consts.COLORS[i], \
+					width = 6)
+					node_and_positions[node1] = (x1, y1)
+					node_and_positions[node1] = (x2, y2)
+					incrementor[edge] += 1
+					incrementor[edge[::-1]] += 1
+			#nx.draw_networkx_edges(self.transportNetwork, node_and_positions, edgelist = self.get_edges(self.routes[i]), alpha = 0.5, edge_color = consts.COLORS[i], width = 8)
 		plt.show()
