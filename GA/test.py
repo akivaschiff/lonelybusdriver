@@ -1,4 +1,5 @@
 import networkx as nx
+from __future__ import print_function
 from Routeset import Routeset
 import MapLoader
 import consts
@@ -15,7 +16,7 @@ def generate_initial_population(transportNetwork, population_size):
 	cur_time = time.time()
 	while len(population) < population_size:
 		if time.time() - cur_time > 3:
-			print "running 3 seconds... generated %d individuals" % len(population)
+			print("running 3 seconds... generated %d individuals" % len(population))
 			cur_time = time.time()
 		completed, individual = generateRouteset(transportNetwork, consts.num_routes, consts.max_route_len, consts.min_route_len)
 		if completed:
@@ -36,8 +37,8 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 	best_objective = {obj_name: min(population, key = lambda x: x.scores[obj_name]) for obj_name in objectives}
 	#print [best_objective[key].get_scores() for key in objectives]
 	for generation in range(generation_count):
-		print "new generation"
-		print best_objective
+		print("new generation")
+		print(best_objective)
 		for parent1_index in range(population_size):
 			# select parent 1
 			parent1 = population[parent1_index]
@@ -109,7 +110,10 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 # routeset.show()
 # sys.exit(0)
 
-transportNetwork = MapLoader.parse_map("Mumford0")
+transportNetwork = MapLoader.parse_map("Mandl")
+population = generate_initial_population(transportNetwork, 1)[0]
+population.show()
+sys.exit(0)
 # rs = Routeset(3, transportNetwork)
 # rs.routes = [[5,4,12,11,10,7,15,9], [1,2,3], [3,6,8,10,14,13]]
 # rs.show()
@@ -120,11 +124,6 @@ transportNetwork = MapLoader.parse_map("Mumford0")
 SEAMO2(transportNetwork, 100, 100)
 sys.exit(0)
 
-
-print child.calc_passenger_cost(demand)
-for route in child.routes:
-	print route
-child.show()
 
 # try:
 # 	child.get_passenger_cost(demand)

@@ -159,7 +159,7 @@ class Routeset(object):
 		labels = {n:n for n in self.transportNetwork.nodes()}
 		edges_labels = {edge:self.transportNetwork.get_edge_data(*edge)["weight"] for edge in self.transportNetwork.edges()}
 		nx.draw_networkx_labels(self.transportNetwork, positions, labels=labels)
-		nx.draw_networkx_edge_labels(self.transportNetwork, positions, edge_labels=edges_labels)
+		#nx.draw_networkx_edge_labels(self.transportNetwork, positions, edge_labels=edges_labels)
 		for i in range(len(self.routes)):
 			nx.draw_networkx_edges(self.transportNetwork, positions, edgelist = self.get_edges(self.routes[i]), alpha = 0.2, edge_color = consts.COLORS[i], width = 8)
 		plt.show()
