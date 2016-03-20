@@ -14,9 +14,9 @@ class Routeset(object):
 		# initiate helper 'set' of each route
 		self._routes_set = [set() for _ in range(num_routes)]
 		# a map from all nodes to a set of routes they contain
-		self._node_to_routes = {}
+		self._node_to_routes = {node: set() for node in transportNetwork.nodes()}
 		# initiate graph to hold connectivity between routes
-		self.routesNetwork = nx.graph()
+		self.routesNetwork = nx.Graph()
 		[self.routesNetwork.add_node(i) for i in range(num_routes)]
 		# remember the covered nodes of all the bus routes
 		self.covered = set()
@@ -26,12 +26,21 @@ class Routeset(object):
 	def load_data(self, routes):
 		pass
 	def add_stop(self, route_num, node):
+		# add node to the list of routes and other datastructs
 		self.routes[route_num].append(node)
 		self._routes_set[route_num].add(node)
-		if node not in self._node_to_routes:
-			self._node_to_routes[node] = set([route_num])
-		else:
-			self._node_to_routes[node].add(route_num)
+		self.covered.add(node)
+
+		# update the routesNetwork if more than one node connecting them - weight is number of connections
+		for other_route in self._node_to_routes[node]:
+			if other_route in self.routesNetwork.edge[route_num]:
+				self.routesNetwork.edge[route_num][other_route]["weight"] += 1
+			else:
+				self.routesNetwork.add_edge(route_num, other_route, weight = 1)
+
+		# update the node_to_route mapping with route through a node
+		self._node_to_routes[node].add(route_num)
+
 	def reverse(self, route_num):
 		self.routes[route_num].reverse()
 	def get_routes(self):
@@ -40,10 +49,27 @@ class Routeset(object):
 		return self.routes[route_num]
 	def get_last_stop(self, route_num):
 		return self.routes[route_num][-1]
-	def add_route(self, route):
-		self.routes.append(copy.copy(route))
+	def contains(self, route_num, node):
+		return node in self._routes_set[route_num]
+	def add_route(self, route, route_num):
+		# load a whole route to specific bus-number
+		for node in route:
+			self.add_stop(route_num, node)
 	def delete_last_stop(self, route_num):
-		self.routes[route_num].pop(-1)
+		# get the node to remove
+		node = self.routes[route_num].pop(-1)
+		self._routes_set[route_num].remove(node)
+		# check if still covered and remove from node_to_route mapping:
+		self._node_to_routes[node].remove(route_num)
+		if len(self._node_to_routes[node]) == 0:
+			self.covered.remove(node)
+
+		# update the routesNetwork if they are not connected any more
+		for other_route in self._node_to_routes[node]:
+			self.routesNetwork.edge[route_num][other_route]["weight"] -= 1
+			if self.routesNetwork.edge[route_num][other_route]["weight"] == 0:
+				self.routesNetwork.remove_edge(route_num, other_route)
+
 	def calc_route_length(self, route):
 		return sum([self.transportNetwork.edge[route[j]][route[j+1]]['weight'] for j in range(len(route)-1)])
 	def calc_operator_cost(self):

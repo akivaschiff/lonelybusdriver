@@ -17,8 +17,8 @@ def generate_initial_population(transportNetwork, population_size):
 		if time.time() - cur_time > 3:
 			print "running 3 seconds... generated %d individuals" % len(population)
 			cur_time = time.time()
-		individual = generateRouteset(transportNetwork, consts.num_routes, consts.max_route_len, consts.min_route_len)
-		if individual:
+		completed, individual = generateRouteset(transportNetwork, consts.num_routes, consts.max_route_len, consts.min_route_len)
+		if completed:
 			individual.calc_scores()
 			population.append(individual)
 	return population
@@ -50,7 +50,7 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 
 			# repair the offspring - this shouldn't be necessary
 			chosen = set([node for route in offspring.get_routes() for node in route])
-			if not repair(offspring, chosen, transportNetwork):
+			if not repair(offspring, transportNetwork, max_len = 10, min_len = 3):
 				continue
 
 			# apply mutation - gamma ray radiation
@@ -115,7 +115,7 @@ transportNetwork = MapLoader.parse_map("Mandl")
 # rs.show()
 
 # 3,4,5
-SEAMO2(transportNetwork, 100, 50)
+SEAMO2(transportNetwork, 20, 10)
 sys.exit(0)
 
 
