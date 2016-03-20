@@ -1,5 +1,5 @@
-import networkx as nx
 from __future__ import print_function
+import networkx as nx
 from Routeset import Routeset
 import MapLoader
 import consts
