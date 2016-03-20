@@ -95,7 +95,7 @@ def delete_nodes(routeset, num_routes, num_nodes_to_delete, max_len, min_len):
 			if len(set(routeset.get_route(index)).intersection(other_nodes)) == 1:
 				tried.append(index)
 				break
-			# check connectivity of entire graph
+			# check cover of entire graph
 			if to_delete not in other_nodes:
 				routeset.reverse(index)
 				to_delete = routeset.get_last_stop(index)

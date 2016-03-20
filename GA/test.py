@@ -45,34 +45,29 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 			parent2 = population[parent2_index]
 			# generate an offspring
 			offspring = crossover(parent1, parent2, transportNetwork)
+			if not offspring:
+				continue
 
 			# repair the offspring - this shouldn't be necessary
 			chosen = set([node for route in offspring.get_routes() for node in route])
 			if not repair(offspring, chosen, transportNetwork):
-				print "repair failed..."
-				continue
-			try:
-				offspring.calc_scores()
-			except:
-				offspring.show()
 				continue
 
 			# apply mutation - gamma ray radiation
-			mutate(offspring, consts.num_routes, consts.max_route_len, consts.min_route_len)
+			# mutate(offspring, consts.num_routes, consts.max_route_len, consts.min_route_len)
 			# this is a heavy function
-			print "generated offspring!"
 			offspring.calc_scores()
 
 			# insert offspring into population
 			if offspring in population:
-				print "offspring in population"
 				continue
 			# if offspring dominates either parent
 			elif offspring.dominates(parent1):
-				print "offspring dominates parent 1"
+				#print "offspring dominates parent 1"
 				population[parent1_index] = offspring
 			elif offspring.dominates(parent2):
-				print "offspring dominates parent 2"
+				#print "offspring dominates parent 2"
+				population[parent2_index] = offspring
 			# if offspring dominates best so far objective
 			elif offspring.get_scores()["passengers"] < best_objective["passengers"].get_scores()["passengers"]:
 				best_objective["passengers"] = offspring
@@ -113,7 +108,14 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 # sys.exit(0)
 
 transportNetwork = MapLoader.parse_map("Mandl")
-SEAMO2(transportNetwork, 20, 5)
+# rs = Routeset(3, transportNetwork)
+# rs.routes = [[5,4,12,11,10,7,15,9], [1,2,3], [3,6,8,10,14,13]]
+# rs.show()
+# delete_nodes(rs, 3, 10, consts.max_route_len, consts.min_route_len)
+# rs.show()
+
+# 3,4,5
+SEAMO2(transportNetwork, 100, 50)
 sys.exit(0)
 
 

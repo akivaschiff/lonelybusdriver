@@ -9,12 +9,29 @@ import random
 
 class Routeset(object):
 	def __init__(self, num_routes, transportNetwork):
+		# initiate the list of routes
 		self.routes = [[] for _ in range(num_routes)]
-		#self._lengths = [0 for _ in range(num_routes)]
-		self.transportNetwork = transportNetwork # save a pointer to the original graph
+		# initiate helper 'set' of each route
+		self._routes_set = [set() for _ in range(num_routes)]
+		# a map from all nodes to a set of routes they contain
+		self._node_to_routes = {}
+		# initiate graph to hold connectivity between routes
+		self.routesNetwork = nx.graph()
+		[self.routesNetwork.add_node(i) for i in range(num_routes)]
+		# remember the covered nodes of all the bus routes
+		self.covered = set()
+		# save a pointer to the original graph
+		self.transportNetwork = transportNetwork
 		self.scores = {}
+	def load_data(self, routes):
+		pass
 	def add_stop(self, route_num, node):
 		self.routes[route_num].append(node)
+		self._routes_set[route_num].add(node)
+		if node not in self._node_to_routes:
+			self._node_to_routes[node] = set([route_num])
+		else:
+			self._node_to_routes[node].add(route_num)
 	def reverse(self, route_num):
 		self.routes[route_num].reverse()
 	def get_routes(self):
