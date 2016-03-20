@@ -36,6 +36,7 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 	best_objective = {obj_name: min(population, key = lambda x: x.scores[obj_name]) for obj_name in objectives}
 	#print [best_objective[key].get_scores() for key in objectives]
 	for generation in range(generation_count):
+		print "new generation"
 		print best_objective
 		for parent1_index in range(population_size):
 			# select parent 1
@@ -50,11 +51,12 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 
 			# repair the offspring - this shouldn't be necessary
 			chosen = set([node for route in offspring.get_routes() for node in route])
-			if not repair(offspring, transportNetwork, max_len = 10, min_len = 3):
-				continue
+			repair(offspring, transportNetwork, max_len = consts.max_route_len, min_len = consts.min_route_len)
 
 			# apply mutation - gamma ray radiation
-			# mutate(offspring, consts.num_routes, consts.max_route_len, consts.min_route_len)
+			mutate(offspring, consts.num_routes, consts.max_route_len, consts.min_route_len)
+			if len(offspring.covered) < len(offspring.transportNetwork.nodes()):
+				continue
 			# this is a heavy function
 			offspring.calc_scores()
 
@@ -107,7 +109,7 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 # routeset.show()
 # sys.exit(0)
 
-transportNetwork = MapLoader.parse_map("Mandl")
+transportNetwork = MapLoader.parse_map("Mumford0")
 # rs = Routeset(3, transportNetwork)
 # rs.routes = [[5,4,12,11,10,7,15,9], [1,2,3], [3,6,8,10,14,13]]
 # rs.show()
@@ -115,7 +117,7 @@ transportNetwork = MapLoader.parse_map("Mandl")
 # rs.show()
 
 # 3,4,5
-SEAMO2(transportNetwork, 20, 10)
+SEAMO2(transportNetwork, 100, 100)
 sys.exit(0)
 
 

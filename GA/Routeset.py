@@ -23,8 +23,7 @@ class Routeset(object):
 		# save a pointer to the original graph
 		self.transportNetwork = transportNetwork
 		self.scores = {}
-	def load_data(self, routes):
-		pass
+
 	def add_stop(self, route_num, node):
 		# add node to the list of routes and other datastructs
 		self.routes[route_num].append(node)
@@ -70,6 +69,19 @@ class Routeset(object):
 			if self.routesNetwork.edge[route_num][other_route]["weight"] == 0:
 				self.routesNetwork.remove_edge(route_num, other_route)
 
+	def try_remove_last_stop(self, route_num):
+		node = self.get_last_stop(route_num)
+		# check if this is the only route through edge - we will destroy cover of graph
+		if len(self._node_to_routes[node]) == 1:
+			return False
+		# verify connectivity
+		self.delete_last_stop(route_num)
+		if nx.algorithms.is_connected(self.routesNetwork):
+			return True
+		else:
+			self.add_stop(route_num, node)
+			return False
+
 	def calc_route_length(self, route):
 		return sum([self.transportNetwork.edge[route[j]][route[j+1]]['weight'] for j in range(len(route)-1)])
 	def calc_operator_cost(self):
@@ -91,7 +103,7 @@ class Routeset(object):
 	def _generate_names(self, node, number):
 		return [self._generate_name(node, inc) for inc in range(number)]
 	def __repr__(self):
-		return str(self.scores) + "\n" + str(self.routes) + '\n'
+		return "\n" + str(self.scores) + "\n" + "\n".join([str(r) for r in self.routes]) + '\n'
 	def calc_passenger_cost(self):
 		# record edges to duplicate
 		counter = Counter()

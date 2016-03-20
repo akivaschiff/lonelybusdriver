@@ -1,6 +1,6 @@
 transfer_penalty = 5
-num_routes = 3
-max_route_len = 10
+num_routes = 12
+max_route_len = 15
 min_route_len = 2
 
 

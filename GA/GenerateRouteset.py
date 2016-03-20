@@ -46,15 +46,12 @@ def repair(routeset, transportNetwork, max_len , min_len):
 
 		# try adding a node to either end
 		to_add = [node for node in transportNetwork.neighbors(routeset.get_last_stop(route_num)) if node not in routeset.covered and not routeset.contains(route_num, node)]
-		selected = None
+		if not to_add:
+			# try again from the other side
+			routeset.reverse(route_num)
+			to_add = [node for node in transportNetwork.neighbors(routeset.get_last_stop(route_num)) if node not in routeset.covered and not routeset.contains(route_num, node)]
 		if to_add:
 			selected = random.choice(to_add)
-		else:
-			routeset.reverse(route_num)
-			to_add_back = [node for node in transportNetwork.neighbors(routeset.get_last_stop(route_num)) if node not in routeset.covered and not routeset.contains(route_num, node)]
-			if to_add_back:
-				selected = random.choice(to_add_back)
-		if selected is not None:
 			routeset.add_stop(route_num, selected)
 		else:
 			# didn't manage to add any to this route - give up on it
