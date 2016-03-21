@@ -3,11 +3,25 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import itertools
 import pprint
+import time
 import copy
 import consts
 import random
 import math
+import shutil
 from math import sin, cos
+import os
+import io
+GEN_PATH = 'd:\\pngs\\generating'
+
+def timing(f):
+    def wrap(*args):
+        time1 = time.time()
+        ret = f(*args)
+        time2 = time.time()
+        print '%s function took %0.3f ms' % (f.func_name, (time2-time1)*1000.0)
+        return ret
+    return wrap
 
 class Routeset(object):
 	def __init__(self, num_routes, transportNetwork):
@@ -25,9 +39,18 @@ class Routeset(object):
 		# save a pointer to the original graph
 		self.transportNetwork = transportNetwork
 		self.scores = {}
+		self.imagecounter = 0
+		try:
+			shutil.rmtree(GEN_PATH)
+		except:
+			pass
+		finally:
+			os.mkdir(GEN_PATH)
 
-	def add_stop(self, route_num, node):
+	def add_stop(self, route_num, node, save = False):
 		# add node to the list of routes and other datastructs
+		if save:
+			self.save()
 		self.routes[route_num].append(node)
 		self._routes_set[route_num].add(node)
 		self.covered.add(node)
@@ -135,7 +158,7 @@ class Routeset(object):
 				transitNetwork.add_edge(a, b, weight = consts.transfer_penalty)
 
 		# run all pairs shortest path algorithm
-		all_pairs = nx.algorithms.all_pairs_dijkstra_path_length(transitNetwork, weight = "weight")
+		all_pairs = nx.algorithms.floyd_warshall(transitNetwork, weight = "weight")
 
 		# now calculate the sum of all the pairs for the minimum where we have transit edges
 		total_sum = 0
@@ -155,7 +178,7 @@ class Routeset(object):
 			total_sum += self.transportNetwork.demand[(source,dest)] * transfer_time
 		return total_sum / float(self.transportNetwork.dij_sum)
 
-	def show(self):
+	def show(self, save = False):
 		# count multi-edges
 		counter = Counter()
 		for route in self.routes:
@@ -183,12 +206,11 @@ class Routeset(object):
 					edgelist = [edge], alpha = 0.8, edge_color = consts.COLORS[i], \
 					width = 6)
 				if edge in duplicates:
-					offset = (duplicates[edge] - incrementor[edge] - 1) * 0.07
+					offset = (duplicates[edge] - incrementor[edge] - 1) * 0.09
 					node1, node2 = edge
 					x1, y1 = node_and_positions[node1]
 					x2, y2 = node_and_positions[node2]
 					angle = math.atan((y2 - y1) / (float(x2 - x1) + 0.0001))
-					print edge, offset, angle
 					node_and_positions[node1] = (x1 - sin(angle) * offset, y1 + cos(angle) * offset)
 					node_and_positions[node2] = (x2 - sin(angle) * offset, y2 + cos(angle) * offset)
 					nx.draw_networkx_edges(self.transportNetwork, node_and_positions, \
@@ -199,4 +221,12 @@ class Routeset(object):
 					incrementor[edge] += 1
 					incrementor[edge[::-1]] += 1
 			#nx.draw_networkx_edges(self.transportNetwork, node_and_positions, edgelist = self.get_edges(self.routes[i]), alpha = 0.5, edge_color = consts.COLORS[i], width = 8)
-		plt.show()
+		if not save:
+			plt.show()
+		else:
+			plt.savefig('%s\\image_%s.png' % (GEN_PATH, str(self.imagecounter).zfill(3)), format = 'png')
+			plt.clf()
+			self.imagecounter += 1
+
+	def save(self):
+		self.show(True)
