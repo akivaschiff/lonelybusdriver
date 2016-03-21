@@ -13,12 +13,14 @@ import sys
 def generate_initial_population(transportNetwork, population_size):
 	''' return an initial population of the requested size with costs '''
 	population = []
+	tries = 0
 	cur_time = time.time()
 	while len(population) < population_size:
 		if time.time() - cur_time > 3:
-			print("running 3 seconds... generated %d individuals" % len(population))
+			print("running 3 seconds... generated %d individuals of %d" % (len(population), tries))
 			cur_time = time.time()
 		completed, individual = generateRouteset(transportNetwork, consts.num_routes, consts.max_route_len, consts.min_route_len)
+		tries += 1
 		if completed:
 			individual.calc_scores()
 			population.append(individual)
@@ -51,7 +53,6 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 				continue
 
 			# repair the offspring - this shouldn't be necessary
-			chosen = set([node for route in offspring.get_routes() for node in route])
 			repair(offspring, transportNetwork, max_len = consts.max_route_len, min_len = consts.min_route_len)
 
 			# apply mutation - gamma ray radiation
@@ -94,31 +95,44 @@ def SEAMO2(transportNetwork, population_size, generation_count):
 			else:
 				continue
 
-
-
-
-
-
-
-#g, demand = MapLoader.parse_map("Mumford0")
-# sys.exit(0)
-# routeset = generate_initial_population(transportNetwork, 1)[0]
-# routeset.show()
-# delete_nodes(routeset, 3, 8, consts.max_route_len, consts.min_route_len)
-# routeset.show()
-# add_nodes(routeset, 3, 15, consts.max_route_len, consts.min_route_len)
-# routeset.show()
-# sys.exit(0)
-
+'''
+The following code demonstrates mutation
+'''
 transportNetwork = MapLoader.parse_map("Mandl")
 population = generate_initial_population(transportNetwork, 1)[0]
-population.show()
+population.save()
+mutate(population, consts.num_routes, consts.max_route_len, consts.min_route_len)
+population.save()
 sys.exit(0)
-# rs = Routeset(3, transportNetwork)
-# rs.routes = [[5,4,12,11,10,7,15,9], [1,2,3], [3,6,8,10,14,13]]
-# rs.show()
-# delete_nodes(rs, 3, 10, consts.max_route_len, consts.min_route_len)
-# rs.show()
+
+'''
+The following code demonstrates a crossover
+'''
+transportNetwork = MapLoader.parse_map("Mandl")
+parent1, parent2 = generate_initial_population(transportNetwork, 2)
+offspring = crossover(parent1, parent2, transportNetwork)
+offspring.save()
+parent1.imagecounter = 101
+parent1.save()
+parent2.imagecounter = 102
+parent2.save()
+sys.exit(0)
+
+'''
+The following code is for generating images of a solution-generation
+'''
+transportNetwork = MapLoader.parse_map("Mandl")
+population = generate_initial_population(transportNetwork, 1)[0]
+rs = Routeset(consts.num_routes, transportNetwork)
+for route_num, stop in population.stops_and_route_nums:
+	if stop == 'reverse':
+		rs.reverse(route_num)
+	else:
+		rs.add_stop(route_num, stop, True)
+rs.show()
+sys.exit(0)
+
+
 
 # 3,4,5
 SEAMO2(transportNetwork, 100, 100)
