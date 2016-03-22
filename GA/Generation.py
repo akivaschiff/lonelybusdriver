@@ -44,7 +44,7 @@ def generate_initial_population(transportNetwork, problem):
     cur_time = time.time()
     while len(population) < problem.initial:
         if time.time() - cur_time > 3:
-            print "running 3 seconds... generated %d individuals of problem.initial" % (len(population))
+            print "running 3 seconds... generated %d individuals of %s" % (len(population), problem.initial)
             cur_time = time.time()
         completed, individual = generateRouteset(transportNetwork, problem)
         if completed:

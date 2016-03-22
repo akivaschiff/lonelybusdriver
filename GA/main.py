@@ -16,6 +16,7 @@ def main():
     parser.add_argument("--tf", help="transfer penalty time (default to 5 min)", type = int, default = 5)
     parser.add_argument("--initial", help="initial population size", type = int, default = 20)
     parser.add_argument("--generations", help="number of generations to run through", type = int, default = 10)
+    parser.add_argument("--profile", help="profile", type = bool, default = False)
 
     problem = parser.parse_args()
 
@@ -32,7 +33,23 @@ def main():
 
     transportNetwork = parse_map(problem.graph)
     print 'Running on map %s with initial population of %s for %s generations' % (problem.graph, problem.initial, problem.generations)
+
+    if problem.profile:
+        import cProfile, pstats, StringIO
+
+        pr = cProfile.Profile()
+        pr.enable()
+
     best = SEAMO2(transportNetwork, problem)
+
+    if problem.profile:
+        pr.disable()
+
+        s = file('GA_profile_stats.txt','w')
+        sortby = 'cumulative'
+        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+        ps.print_stats()
+
     best.save()
     print best
 
@@ -43,27 +60,6 @@ if __name__ == "__main__":
 sys.exit(0)
 
 
-
-'''
-Our main algorithm
-'''
-import cProfile, pstats, StringIO
-
-pr = cProfile.Profile()
-pr.enable()
-# ... do something ...
-transportNetwork = MapLoader.parse_map("Mandl")
-best = SEAMO2(transportNetwork, 30, 15)
-print best
-
-pr.disable()
-#s = StringIO.StringIO()
-s = file('GA_stats.txt','w')
-sortby = 'cumulative'
-ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-ps.print_stats()
-
-sys.exit(0)
 
 '''
 The following code demonstrates mutation
