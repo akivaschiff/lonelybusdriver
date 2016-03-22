@@ -140,7 +140,10 @@ class Routeset(object):
 				transitNetwork.add_edge(a, b, weight = self.problem.tf)
 
 		# run all pairs shortest path algorithm
-		all_pairs = nx.algorithms.floyd_warshall(transitNetwork, weight = "weight")
+		pair_func = nx.algorithms.floyd_warshall
+		if len(transitNetwork.edges()) < len(transitNetwork.nodes())**2 / 2:
+			pair_func = nx.algorithms.all_pairs_dijkstra_path_length
+		all_pairs = pair_func(transitNetwork, weight = "weight")
 
 		# now calculate the sum of all the pairs for the minimum where we have transit edges
 		total_sum = 0
