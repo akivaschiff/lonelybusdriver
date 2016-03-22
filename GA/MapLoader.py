@@ -1,7 +1,12 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import pprint
+import glob
+import sys
 import os
+
+'''
+This file contains logic for parsing the map formats into networkx Graph objects and a Demand matrix
+'''
 
 def parse_map(map_name):
 	suffixes = ['Coords','Demand','TravelTimes']
@@ -39,7 +44,7 @@ def parse_map(map_name):
 	return TransportNetwork
 
 def main(map_name, show = True):
-	transportNetwork, demand = parse_map(map_name)
+	transportNetwork = parse_map(map_name)
 
 	if show == True:
 		positions = nx.get_node_attributes(transportNetwork, 'pos')
@@ -49,5 +54,14 @@ def main(map_name, show = True):
 		plt.show()
 
 if __name__ == '__main__':
-	map_name = "Mandl"
+	if not os.path.exists('maps'):
+		print 'MAP FOLDER NOT FOUND'
+		sys.exit(0)
+
+	map_names = [name.split(os.path.sep)[1].split('Coords')[0] for name in glob.glob(os.path.join('maps','*Coords*'))]
+	if len(sys.argv) < 2 or sys.argv[1] not in map_names:
+		print "Usage: MapLoader.py <map_name>\nName should be one of %s" % str(map_names)
+		sys.exit(0)
+
+	map_name = sys.argv[1]
 	main(map_name, True)
