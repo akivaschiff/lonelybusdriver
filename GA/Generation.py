@@ -1,11 +1,15 @@
 from Routeset import Routeset
-import consts
-import GenerateRouteset
-import random
+from GenerateRouteset import generateRouteset
 import itertools
+import random
+import time
 
-def crossover(parent1, parent2, transportNetwork):
-	offspring = Routeset(consts.num_routes, transportNetwork)
+def crossover(parent1, parent2, transportNetwork, problem):
+	'''
+	Attempt to crossover two parents and create an offspring
+	Warning: offspring may need repairing - do not assume it covers entire graph
+	'''
+	offspring = Routeset(problem.busses, transportNetwork)
 	# switch between parents and records the paths already chosen
 	switch_parent = itertools.cycle([(parent1, set()), (parent2, set())])
 	current_parent, paths_chosen = next(switch_parent)
@@ -22,7 +26,37 @@ def crossover(parent1, parent2, transportNetwork):
 		paths_chosen.add(best_route_index)
 	return offspring
 
+def mutate(routeset, num_routes, max_len, min_len):
+	'''
+	Mutate a given Routeset either by adding or deleting stops
+	Note: If gets a legal solution - mutated solution will also be legal
+	'''
+	num_nodes_to_change = random.randint(1, num_routes*(max_len/2))
+	mut = random.choice([add_nodes,delete_nodes])
+	return mut(routeset, num_routes, num_nodes_to_change, max_len, min_len)
+
+
+def generate_initial_population(transportNetwork, problem):
+    '''
+    Return an initial population of the requested size
+    '''
+    population = []
+    cur_time = time.time()
+    while len(population) < problem.initial:
+        if time.time() - cur_time > 3:
+            print "running 3 seconds... generated %d individuals of problem.initial" % (len(population))
+            cur_time = time.time()
+        completed, individual = generateRouteset(transportNetwork, problem.busses, problem.max, problem.min)
+        if completed:
+            individual.calc_scores()
+            population.append(individual)
+    print 'Finished generating initial population!'
+    return population
+
 def choose_route(parent, paths_chosen, offspring):
+	'''
+	Helper function for crossover - helps select a route to take from the parent to pass on to the offspring
+	'''
 	best_value = 0
 	best_index = 0
 	if len(offspring.covered) == len(parent.covered):
@@ -46,12 +80,10 @@ def choose_route(parent, paths_chosen, offspring):
 
 	return best_index
 
-def mutate(routeset, num_routes, max_len, min_len):
-	num_nodes_to_change = random.randint(1, num_routes*(max_len/2))
-	mut = random.choice([add_nodes,delete_nodes])
-	return mut(routeset, num_routes, num_nodes_to_change, max_len, min_len)
-
 def add_nodes(routeset, num_routes, num_nodes_to_add, max_len, min_len):
+	'''
+	A type of mutation - attempts to add num_nodes_to_add to the routeset
+	'''
 	#constraints: route doesn't pass max_len, no return to same node twice in route
 	added_nodes = 0
 	tried = set()
@@ -78,6 +110,9 @@ def add_nodes(routeset, num_routes, num_nodes_to_add, max_len, min_len):
 				break
 
 def delete_nodes(routeset, num_routes, num_nodes_to_delete, max_len, min_len):
+	'''
+	A type of mutation - attempts to remove num_nodes_to_delete stops from the routeset
+	'''
 	#constraints: route doesn't pass min_len, graph still connected and covered
 	deleted_nodes = 0
 	tried = set()

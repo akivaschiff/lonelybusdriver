@@ -1,5 +1,4 @@
 import random
-import consts
 from Routeset import Routeset
 
 def generateRouteset(transportNetwork, num_routes, max_len, min_len):

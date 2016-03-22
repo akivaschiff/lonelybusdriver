@@ -11,17 +11,11 @@ import math
 import shutil
 from math import sin, cos
 import os
-import io
 GEN_PATH = 'd:\\pngs\\generating'
 
-def timing(f):
-    def wrap(*args):
-        time1 = time.time()
-        ret = f(*args)
-        time2 = time.time()
-        print '%s function took %0.3f ms' % (f.func_name, (time2-time1)*1000.0)
-        return ret
-    return wrap
+'''
+The routeset class - This class represents a solution
+'''
 
 class Routeset(object):
 	def __init__(self, num_routes, transportNetwork):

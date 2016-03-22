@@ -1,99 +1,61 @@
-from __future__ import print_function
-import networkx as nx
-from Routeset import Routeset
-import MapLoader
-import consts
-from GenerateRouteset import repair
-from GenerateRouteset import generateRouteset
-from Generation import *
-import random
-import time
+from MapLoader import parse_map
+from evolve import SEAMO2
+import argparse
 import sys
+import os
 
-def generate_initial_population(transportNetwork, population_size):
-	''' return an initial population of the requested size with costs '''
-	population = []
-	tries = 0
-	cur_time = time.time()
-	while len(population) < population_size:
-		if time.time() - cur_time > 3:
-			print("running 3 seconds... generated %d individuals of %d" % (len(population), tries))
-			cur_time = time.time()
-		completed, individual = generateRouteset(transportNetwork, consts.num_routes, consts.max_route_len, consts.min_route_len)
-		tries += 1
-		if completed:
-			individual.calc_scores()
-			population.append(individual)
-	return population
+def main():
+    parser = argparse.ArgumentParser(
+        description='Use SEAMO2 to solve the UNRBP\n example:\n\tpython %s --graph Mandl --busses 4 --min 2 --max  10' % __file__)
+    parser.add_argument("--graph", help="can be on of the following options: (Mandl, Mumford0)")
+    parser.add_argument("--busses", help="number of busses on map", type=int)
+    parser.add_argument("--min", help="minimal route length", type=int, default = 2)
+    parser.add_argument("--max", help="maximal route length", type = int, default = 10)
+    parser.add_argument("--tf", help="transfer penalty time (default to 5 min)", type = int, default = 5)
+    parser.add_argument("--initial", help="initial population size", type = int, default = 20)
+    parser.add_argument("--generations", help="number of generations to run through", type = int, default = 10)
 
-def get_another_parent_index(number, range):
-	parent2_index = random.randint(0,range)
-	#parent2 = random.choice(population)
-	while number == parent2_index:
-		parent2_index = random.randint(0,range)
-	return parent2_index
+    problem = parser.parse_args()
 
-def SEAMO2(transportNetwork, population_size, generation_count):
-	population = generate_initial_population(transportNetwork, population_size)
-	objectives = ["passengers", "operator"]
-	best_objective = {obj_name: min(population, key = lambda x: x.scores[obj_name]) for obj_name in objectives}
-	#print [best_objective[key].get_scores() for key in objectives]
-	for generation in range(generation_count):
-		print("new generation")
-		print(best_objective)
-		for parent1_index in range(population_size):
-			# select parent 1
-			parent1 = population[parent1_index]
-			# select parent 2
-			parent2_index = random.randint(0, population_size - 1)
-			parent2 = population[parent2_index]
-			# generate an offspring
-			offspring = crossover(parent1, parent2, transportNetwork)
-			if not offspring:
-				continue
+    assert problem.min > 1, 'Minimal route must be of length 2'
+    assert problem.max > problem.min, 'Maximal route length must be longer than Minimal'
+    assert problem.busses > 0, 'You need at least 1 bus :)'
+    assert problem.tf >= 0, 'The transfer time between busses must be a non-negative number'
+    assert problem.graph in ["Mandl", "Mumford0"], 'Pick an existing map!'
 
-			# repair the offspring - this shouldn't be necessary
-			repair(offspring, transportNetwork, max_len = consts.max_route_len, min_len = consts.min_route_len)
+    transportNetwork = parse_map(problem.graph)
+    print 'Running on map %s with initial population of %s for %s generations' % (problem.graph, problem.initial, problem.generations)
+    best = SEAMO2(transportNetwork, problem)
+    print best
 
-			# apply mutation - gamma ray radiation
-			mutate(offspring, consts.num_routes, consts.max_route_len, consts.min_route_len)
-			if len(offspring.covered) < len(offspring.transportNetwork.nodes()):
-				continue
-			# this is a heavy function
-			offspring.calc_scores()
+if __name__ == "__main__":
+    main()
 
-			# insert offspring into population
-			if offspring in population:
-				continue
-			# if offspring dominates either parent
-			elif offspring.dominates(parent1):
-				#print "offspring dominates parent 1"
-				population[parent1_index] = offspring
-			elif offspring.dominates(parent2):
-				#print "offspring dominates parent 2"
-				population[parent2_index] = offspring
-			# if offspring dominates best so far objective
-			elif offspring.get_scores()["passengers"] < best_objective["passengers"].get_scores()["passengers"]:
-				best_objective["passengers"] = offspring
-				if not parent1 == best_objective["operator"]:
-					population[parent1_index] = offspring
-				elif not parent2 == best_objective["operator"]:
-					population[parent2_index] = offspring
-			elif offspring.get_scores()["operator"] < best_objective["operator"].get_scores()["operator"]:
-				best_objective["operator"] = offspring
-				if not parent1 == best_objective["passengers"]:
-					population[parent1_index] = offspring
-				elif not parent2 == best_objective["passengers"]:
-					population[parent2_index] = offspring
-			# mutual non dominatoion
-			elif not parent1.dominates(offspring) and not parent2.dominates(offspring):
-				for ind in range(population_size):
-					if offspring.dominates(population[ind]):
-						population[ind] = offspring
-						break
-			# just delete offspring
-			else:
-				continue
+
+sys.exit(0)
+
+
+
+'''
+Our main algorithm
+'''
+import cProfile, pstats, StringIO
+
+pr = cProfile.Profile()
+pr.enable()
+# ... do something ...
+transportNetwork = MapLoader.parse_map("Mandl")
+best = SEAMO2(transportNetwork, 30, 15)
+print best
+
+pr.disable()
+#s = StringIO.StringIO()
+s = file('GA_stats.txt','w')
+sortby = 'cumulative'
+ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+ps.print_stats()
+
+sys.exit(0)
 
 '''
 The following code demonstrates mutation
@@ -125,24 +87,17 @@ transportNetwork = MapLoader.parse_map("Mandl")
 population = generate_initial_population(transportNetwork, 1)[0]
 rs = Routeset(consts.num_routes, transportNetwork)
 for route_num, stop in population.stops_and_route_nums:
-	if stop == 'reverse':
-		rs.reverse(route_num)
-	else:
-		rs.add_stop(route_num, stop, True)
+    if stop == 'reverse':
+        rs.reverse(route_num)
+    else:
+        rs.add_stop(route_num, stop, True)
 rs.show()
 sys.exit(0)
 
-
-
-# 3,4,5
-SEAMO2(transportNetwork, 100, 100)
-sys.exit(0)
-
-
 # try:
-# 	child.get_passenger_cost(demand)
+#   child.get_passenger_cost(demand)
 # except:
-# 	print "exception"
+#   print "exception"
 
 
 

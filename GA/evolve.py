@@ -1,18 +1,16 @@
-import networkx as nx
-from Routeset import Routeset
-import MapLoader
-import consts
 from GenerateRouteset import repair
 from GenerateRouteset import generateRouteset
-from Generation import *
+from Generation import crossover, mutate, generate_initial_population
 import random
-import argparse
 import time
-import sys
 
 
-def SEAMO2(transportNetwork, population_size, generation_count):
-    population = generate_initial_population(transportNetwork, population_size)
+def SEAMO2(transportNetwork, problem):
+    '''
+    The main algorithm - detailed description in Paper
+    '''
+    population_size, generation_count = problem.initial, problem.generations
+    population = generate_initial_population(transportNetwork, problem)
     objectives = ["passengers", "operator"]
     best_objective = {obj_name: min(population, key = lambda x: x.scores[obj_name]) for obj_name in objectives}
     #print [best_objective[key].get_scores() for key in objectives]
@@ -25,15 +23,13 @@ def SEAMO2(transportNetwork, population_size, generation_count):
             parent2_index = random.randint(0, population_size - 1)
             parent2 = population[parent2_index]
             # generate an offspring
-            offspring = crossover(parent1, parent2, transportNetwork)
-            if not offspring:
-                continue
+            offspring = crossover(parent1, parent2, transportNetwork, problem)
 
             # repair the offspring - this shouldn't be necessary
-            repair(offspring, transportNetwork, max_len = consts.max_route_len, min_len = consts.min_route_len)
+            repair(offspring, transportNetwork, problem.max, problem.min)
 
             # apply mutation - gamma ray radiation
-            mutate(offspring, consts.num_routes, consts.max_route_len, consts.min_route_len)
+            mutate(offspring, problem.busses, problem.max, problem.min)
             if len(offspring.covered) < len(offspring.transportNetwork.nodes()):
                 continue
             # this is a heavy function
@@ -72,27 +68,3 @@ def SEAMO2(transportNetwork, population_size, generation_count):
             else:
                 continue
     return best_objective
-
-def generate_initial_population(transportNetwork, population_size):
-    ''' return an initial population of the requested size with costs '''
-    population = []
-    tries = 0
-    cur_time = time.time()
-    while len(population) < population_size:
-        if time.time() - cur_time > 3:
-            print "running 3 seconds... generated %d individuals of %d" % (len(population), tries)
-            cur_time = time.time()
-        completed, individual = generateRouteset(transportNetwork, consts.num_routes, consts.max_route_len, consts.min_route_len)
-        tries += 1
-        if completed:
-            individual.calc_scores()
-            population.append(individual)
-    return population
-
-def get_another_parent_index(number, range):
-    parent2_index = random.randint(0,range)
-    #parent2 = random.choice(population)
-    while number == parent2_index:
-        parent2_index = random.randint(0,range)
-    return parent2_index
-
