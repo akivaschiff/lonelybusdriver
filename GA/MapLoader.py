@@ -41,6 +41,8 @@ def parse_map(map_name):
 	#print TransportNetwork.edges(data = True)
 	setattr(TransportNetwork, "demand", demand)
 	setattr(TransportNetwork, "dij_sum", float(sum(demand.values())))
+	paths = nx.algorithms.floyd_warshall(TransportNetwork, weight = "weight")
+	setattr(TransportNetwork, "paths", paths)
 	return TransportNetwork
 
 def main(map_name, show = True):

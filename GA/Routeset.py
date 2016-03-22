@@ -157,7 +157,7 @@ class Routeset(object):
 				split_nodes_a = self._generate_names(a, duplicates[source])
 				split_nodes_b = self._generate_names(b, duplicates[dest])
 				transfer_time = min(all_pairs[c][d] for c, d in itertools.product(split_nodes_a, split_nodes_b))
-			total_sum += self.transportNetwork.demand[(source,dest)] * transfer_time
+			total_sum += self.transportNetwork.demand[(source,dest)] * (transfer_time / self.transportNetwork.paths[source][dest])
 		return total_sum / float(self.transportNetwork.dij_sum)
 
 	def show(self, save = False):

@@ -2,10 +2,12 @@ from GenerateRouteset import repair
 from GenerateRouteset import generateRouteset
 from Generation import crossover, mutate, generate_initial_population
 import matplotlib.pyplot as plt
-plt.switch_backend('agg')
 import random
 import time
 import os
+# this line is for ubuntu
+if os.path.sep == '/':
+    plt.switch_backend('agg')
 
 
 def SEAMO2(transportNetwork, problem):
