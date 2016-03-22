@@ -195,9 +195,9 @@ class PassengersMinimalTravelVRPProblem(VRPProblem):
   def __init__(self, cityMap):
     VRPProblem.__init__(self, cityMap)
     self.src_nodes = {s for s, d in cityMap.passengers}
-    print self.src_nodes
+    print(self.src_nodes)
     self.relevant_nodes = {d for s, d in cityMap.passengers} | self.src_nodes
-    print self.relevant_nodes - self.src_nodes
+    print(self.relevant_nodes - self.src_nodes)
     self.short_path = networkx.all_pairs_dijkstra_path(cityMap.g)
 
   def isGoalState(self, state):

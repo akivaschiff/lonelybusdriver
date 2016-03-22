@@ -57,12 +57,12 @@ def main():
     # Print our clusters
     for i,c in enumerate(clusters):
         for p in c.points:
-            print " Cluster: ", i, "\t Point :", p
+            print (" Cluster: ", i, "\t Point :", p)
     
     # Display clusters using plotly for 2d data
     # This uses the 'open' command on a URL and may only work on OSX.
     if dimensions == 2 and PLOTLY_USERNAME:
-        print "Plotting points, launching browser ..."
+        print ("Plotting points, launching browser ...")
         plotClusters(clusters)
 
 class Point:
@@ -187,7 +187,7 @@ def kmeans(points, k, cutoff):
         
         # If the centroids have stopped moving much, say we're done!
         if biggest_shift < cutoff:
-            print "Converged after %s iterations" % loopCounter
+            print ("Converged after %s iterations" % loopCounter)
             break
     return clusters
 

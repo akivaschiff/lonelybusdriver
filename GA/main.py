@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 from evolve import SEAMO2
 import argparse
+import json
 import sys
 import os
 
@@ -40,7 +41,7 @@ def main():
         pr = cProfile.Profile()
         pr.enable()
 
-    best = SEAMO2(transportNetwork, problem)
+    best, stats = SEAMO2(transportNetwork, problem)
 
     if problem.profile:
         pr.disable()
