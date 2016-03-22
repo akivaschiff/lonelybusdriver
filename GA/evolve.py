@@ -106,7 +106,8 @@ def SEAMO2(transportNetwork, problem):
     plt.legend()
     fontP = FontProperties()
     fontP.set_size('small')
-    plt.legend(prop = fontP, bbox_to_anchor=(0, 1), loc='upper right', ncol=1)
+    plt.legend(prop = fontP, bbox_to_anchor=(0.95, 1), loc='upper right', ncol=1)
+    plt.title('Map %s - Population size: %d, Generations: %d' % (problem.graph, population_size, generation_count))
     plt.savefig(os.path.join('generating','stats.png'))
     plt.clf()
 
