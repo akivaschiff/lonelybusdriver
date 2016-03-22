@@ -9,7 +9,7 @@ def crossover(parent1, parent2, transportNetwork, problem):
 	Attempt to crossover two parents and create an offspring
 	Warning: offspring may need repairing - do not assume it covers entire graph
 	'''
-	offspring = Routeset(problem.busses, transportNetwork)
+	offspring = Routeset(transportNetwork, problem)
 	# switch between parents and records the paths already chosen
 	switch_parent = itertools.cycle([(parent1, set()), (parent2, set())])
 	current_parent, paths_chosen = next(switch_parent)
@@ -46,7 +46,7 @@ def generate_initial_population(transportNetwork, problem):
         if time.time() - cur_time > 3:
             print "running 3 seconds... generated %d individuals of problem.initial" % (len(population))
             cur_time = time.time()
-        completed, individual = generateRouteset(transportNetwork, problem.busses, problem.max, problem.min)
+        completed, individual = generateRouteset(transportNetwork, problem)
         if completed:
             individual.calc_scores()
             population.append(individual)

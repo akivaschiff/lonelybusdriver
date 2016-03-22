@@ -5,7 +5,6 @@ import itertools
 import pprint
 import time
 import copy
-import consts
 import random
 import math
 import shutil
@@ -18,20 +17,21 @@ The routeset class - This class represents a solution
 '''
 
 class Routeset(object):
-	def __init__(self, num_routes, transportNetwork):
+	def __init__(self, transportNetwork, problem):
 		# initiate the list of routes
-		self.routes = [[] for _ in range(num_routes)]
+		self.routes = [[] for _ in range(problem.busses)]
 		# initiate helper 'set' of each route
-		self._routes_set = [set() for _ in range(num_routes)]
+		self._routes_set = [set() for _ in range(problem.busses)]
 		# a map from all nodes to a set of routes they contain
 		self._node_to_routes = {node: set() for node in transportNetwork.nodes()}
 		# initiate graph to hold connectivity between routes
 		self.routesNetwork = nx.Graph()
-		[self.routesNetwork.add_node(i) for i in range(num_routes)]
+		[self.routesNetwork.add_node(i) for i in range(problem.busses)]
 		# remember the covered nodes of all the bus routes
 		self.covered = set()
 		# save a pointer to the original graph
 		self.transportNetwork = transportNetwork
+		self.problem = problem
 		self.scores = {}
 		self.imagecounter = 0
 		try:
@@ -149,7 +149,7 @@ class Routeset(object):
 		for node, appearances in duplicates.iteritems():
 			split_nodes = self._generate_names(str(node), appearances)
 			for a, b in itertools.combinations(split_nodes, 2):
-				transitNetwork.add_edge(a, b, weight = consts.transfer_penalty)
+				transitNetwork.add_edge(a, b, weight = self.problem.tf)
 
 		# run all pairs shortest path algorithm
 		all_pairs = nx.algorithms.floyd_warshall(transitNetwork, weight = "weight")
@@ -197,7 +197,7 @@ class Routeset(object):
 			for edge in edges:
 				if edge not in duplicates:
 					nx.draw_networkx_edges(self.transportNetwork, node_and_positions_original, \
-					edgelist = [edge], alpha = 0.8, edge_color = consts.COLORS[i], \
+					edgelist = [edge], alpha = 0.8, edge_color = self.problem.COLORS[i], \
 					width = 6)
 				if edge in duplicates:
 					offset = (duplicates[edge] - incrementor[edge] - 1) * 0.09
@@ -208,7 +208,7 @@ class Routeset(object):
 					node_and_positions[node1] = (x1 - sin(angle) * offset, y1 + cos(angle) * offset)
 					node_and_positions[node2] = (x2 - sin(angle) * offset, y2 + cos(angle) * offset)
 					nx.draw_networkx_edges(self.transportNetwork, node_and_positions, \
-					edgelist = [edge], alpha = 0.8, edge_color = consts.COLORS[i], \
+					edgelist = [edge], alpha = 0.8, edge_color = self.problem.COLORS[i], \
 					width = 6)
 					node_and_positions[node1] = (x1, y1)
 					node_and_positions[node1] = (x2, y2)

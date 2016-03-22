@@ -1,9 +1,10 @@
 import random
 from Routeset import Routeset
 
-def generateRouteset(transportNetwork, num_routes, max_len, min_len):
+def generateRouteset(transportNetwork, problem):
+	num_routes, max_len, min_len = problem.busses, problem.max, problem.min
 	# TODO: make sure routes are longer than some minimum
-	routeset = Routeset(num_routes, transportNetwork)
+	routeset = Routeset(transportNetwork, problem)
 	for route_num in range(num_routes):
 		route_len = random.randint(min_len, max_len)
 		if route_num == 0:

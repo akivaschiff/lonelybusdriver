@@ -1,4 +1,6 @@
 from MapLoader import parse_map
+import matplotlib.pyplot as plt
+from matplotlib import colors
 from evolve import SEAMO2
 import argparse
 import sys
@@ -23,9 +25,15 @@ def main():
     assert problem.tf >= 0, 'The transfer time between busses must be a non-negative number'
     assert problem.graph in ["Mandl", "Mumford0"], 'Pick an existing map!'
 
+    # define the color list
+    cm = plt.get_cmap('gist_rainbow')
+    rainbow_colors = [colors.rgb2hex(cm(1.*i/problem.busses)) for i in range(problem.busses)]
+    setattr(problem, 'COLORS', rainbow_colors)
+
     transportNetwork = parse_map(problem.graph)
     print 'Running on map %s with initial population of %s for %s generations' % (problem.graph, problem.initial, problem.generations)
     best = SEAMO2(transportNetwork, problem)
+    best['passengers'].show()
     print best
 
 if __name__ == "__main__":
