@@ -1,14 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from collections import Counter
+from math import sin, cos, atan
 import itertools
-import pprint
-import time
-import copy
-import random
-import math
 import shutil
-from math import sin, cos
 import os
 GEN_PATH = 'd:\\pngs\\generating'
 
@@ -204,7 +199,7 @@ class Routeset(object):
 					node1, node2 = edge
 					x1, y1 = node_and_positions[node1]
 					x2, y2 = node_and_positions[node2]
-					angle = math.atan((y2 - y1) / (float(x2 - x1) + 0.0001))
+					angle = atan((y2 - y1) / (float(x2 - x1) + 0.0001))
 					node_and_positions[node1] = (x1 - sin(angle) * offset, y1 + cos(angle) * offset)
 					node_and_positions[node2] = (x2 - sin(angle) * offset, y2 + cos(angle) * offset)
 					nx.draw_networkx_edges(self.transportNetwork, node_and_positions, \
