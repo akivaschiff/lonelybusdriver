@@ -52,6 +52,7 @@ def main():
         ps.print_stats()
 
     best.save()
+    file(os.path.join('generating','best_recent.txt'),'w').write(str(best))
     print best
 
 if __name__ == "__main__":
