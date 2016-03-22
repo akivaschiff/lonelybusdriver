@@ -28,6 +28,13 @@ class Problem:
     return sum([self.graph[state[i]][state[i+1]]['weight'] for i in range(len(state)-1)])
 
 
+def unvisited_heuristic(state, problem):
+	unvisited = [v for v in problem.graph.nodes() if v not in state]
+	if not unvisited:
+		return 0
+	weights = [problem.graph[state[-1]][v]['weight'] for v in unvisited]
+	return min(weights)
+	
 def floyd_warshall_solution_remove_stations(cityMap):
   nodes = cityMap.g.nodes()
   for v in nodes:
@@ -42,9 +49,9 @@ def floyd_warshall_solution_remove_stations(cityMap):
   routes = []
   segment = len(route) / cityMap.number_of_busses
   for i in range(segment):
-		routes.append(route[i*segment: i*segment + segment])
-		cityMap.set_route(i+1, route[i*segment: i*segment + segment])
-		return routes
+    routes.append(route[i*segment: i*segment + segment])
+    cityMap.set_route(i+1, route[i*segment: i*segment + segment])
+  return routes
 
 
 def clustering_map(cityMap, k):
@@ -87,7 +94,7 @@ def hub_algo(c):
 				Gp.add_edge(v, u, weight=c.get_route_weight_from_route(all_short[u][v]))
 
 		problem = Problem(Gp)
-		best = simple.aStarSearch(problem)
+		best = simple.aStarSearch(problem, unvisited_heuristic)
 
 		new_route = []
 		for j in range(len(best)-1):
@@ -97,7 +104,9 @@ def hub_algo(c):
 
 
 if __name__ == "__main__":
-	c = CityMap.CityMap(r'maps\mundel.map')
-	hub_algo(c)
-	c.draw_clusters()
-	plt.show()
+	for i in range(1, 10):
+		c = CityMap.CityMap(r'maps\mesh_%d_1' % i)
+		p = Problem(c.g)
+		best = simple.aStarSearch(p)
+		print(i, " : ", p.expanded)
+		
