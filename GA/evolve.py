@@ -2,8 +2,10 @@ from GenerateRouteset import repair
 from GenerateRouteset import generateRouteset
 from Generation import crossover, mutate, generate_initial_population
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 import random
 import time
+import os
 
 
 def SEAMO2(transportNetwork, problem):
@@ -64,6 +66,7 @@ def SEAMO2(transportNetwork, problem):
 
     for gen, scores in enumerate(scores_per_generation):
         plt.plot([gen] * len(scores), scores, 'ro')
-    plt.save(os.path.join('generating','evolve.png'))
+    plt.savefig(os.path.join('generating','evolve.png'))
+    plt.clf()
 
     return best_objective

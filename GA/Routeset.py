@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 from collections import Counter
 from math import sin, cos, atan
 import itertools
-import shutil
 import os
 GEN_PATH = 'generating'
 
@@ -207,7 +206,7 @@ class Routeset(object):
 		if not save:
 			plt.show()
 		else:
-			plt.savefig('%s\\image_%s.png' % (GEN_PATH, str(self.imagecounter).zfill(3)), format = 'png')
+			plt.savefig('%s%simage_%s.png' % (GEN_PATH, os.path.sep, str(self.imagecounter).zfill(3)), format = 'png')
 			self.imagecounter += 1
 		plt.clf()
 
