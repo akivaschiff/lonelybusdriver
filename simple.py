@@ -46,20 +46,20 @@ def test(cityMap, h):
   final_route = aStarSearch(problem, h)
   #import pdb; pdb.set_trace()
   end_time = time.time() - start_time
-  print "==============================================="
+  #print "==============================================="
   if not final_route:
-    print "NO SOLUTION!"
+    #print "NO SOLUTION!"
     return -1
   else:
-    print "SOLUTION:"
+    #print "SOLUTION:"
     pprint.pprint(final_route)
 
-  print "==============================================="
+  #print "==============================================="
   for busnum, bus in enumerate(final_route.busses):
     problem.cityMap.set_route(busnum+1, bus.route)
 
   #print problem.tmp_storage["cache"]
-  print end_time, final_route.get_state_cost(), problem.expanded
+  #print end_time, final_route.get_state_cost(), problem.expanded
   #assert final_route.get_state_cost() >= max(problem.tmp_storage["cache"])
   return end_time, final_route.get_state_cost(), problem.expanded
 
@@ -80,7 +80,7 @@ def run_simple_test():
     tmp_result = {}
     for i in range(3, NUMBER_OF_TESTS):
         graph = CityMap.CityMap(r"maps\grid_%d_1" % i)
-        print r"maps\mesh_%d_1" % i
+        #print r"maps\mesh_%d_1" % i
         start_time = time.time()
         end_time = time.time() - start_time
         tmp_result[i] = test(graph, h)
@@ -89,8 +89,8 @@ def run_simple_test():
         plt.savefig(r"results\mesh_%d_1_%s.png" % (i, "fw"))
         plt.clf()
         results[h.__name__] = tmp_result
-    print tmp_result
-  print results
+    #print tmp_result
+  #print results
 
 
 def main():

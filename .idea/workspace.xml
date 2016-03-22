@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf67e3d5-01d4-451d-8be0-4bc9c09296f2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/approx_compare.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CityMap.py" afterPath="$PROJECT_DIR$/CityMap.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/maps/Mumford0Coords.txt" afterPath="$PROJECT_DIR$/GA/maps/Mumford0Coords.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/grid_10_1_pss_14" afterPath="$PROJECT_DIR$/maps/grid_10_1_pss_14" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/grid_10_1_pss_9" afterPath="$PROJECT_DIR$/maps/grid_10_1_pss_9" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mesh_heuristics.py" afterPath="$PROJECT_DIR$/mesh_heuristics.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/single bus/.ipynb_checkpoints/Untitled-checkpoint.ipynb" afterPath="$PROJECT_DIR$/results/single bus/.ipynb_checkpoints/Untitled-checkpoint.ipynb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/single bus/Untitled.ipynb" afterPath="$PROJECT_DIR$/results/single bus/Untitled.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simple.py" afterPath="$PROJECT_DIR$/simple.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/create_simple_test.py" afterPath="$PROJECT_DIR$/tools/create_simple_test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/graph_gen.py" afterPath="$PROJECT_DIR$/tools/graph_gen.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/mundel_2_citymap.py" afterPath="$PROJECT_DIR$/tools/mundel_2_citymap.py" />
     </list>
     <ignored path="lonelybusdriver.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,8 +26,8 @@
       <file leaf-file-name="simple.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simple.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5123153">
-              <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.7651888">
+              <caret line="92" column="3" selection-start-line="92" selection-start-column="3" selection-end-line="92" selection-end-column="3" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -47,10 +35,32 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="approx_compare.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/approx_compare.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="approx_solution.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/approx_solution.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="clustering_cool_solution.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/clustering_cool_solution.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-48.411766">
+            <state vertical-scroll-proportion="0.0">
               <caret line="101" column="19" selection-start-line="101" selection-start-column="19" selection-end-line="101" selection-end-column="19" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
@@ -114,28 +124,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="passengers_heuristics.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/passengers_heuristics.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="51" column="48" selection-start-line="51" selection-start-column="48" selection-end-line="51" selection-end-column="48" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mundel.map" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/maps/mundel.map">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="2723" selection-start-line="0" selection-start-column="2723" selection-end-line="0" selection-end-column="2723" />
               <folding />
             </state>
           </provider>
@@ -728,16 +716,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/approx_solution.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.68390805">
-          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#15#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tools/graph_gen.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -772,16 +750,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/approx_compare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/maps/mesh_14_1">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -803,16 +771,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="2723" selection-start-line="0" selection-start-column="2723" selection-end-line="0" selection-end-column="2723" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/clustering_cool_solution.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-48.411766">
-          <caret line="101" column="19" selection-start-line="101" selection-start-column="19" selection-end-line="101" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -874,10 +832,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/clustering_cool_solution.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="101" column="19" selection-start-line="101" selection-start-column="19" selection-end-line="101" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/approx_solution.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/approx_compare.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/simple.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5123153">
-          <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.7651888">
+          <caret line="92" column="3" selection-start-line="92" selection-start-column="3" selection-end-line="92" selection-end-column="3" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
