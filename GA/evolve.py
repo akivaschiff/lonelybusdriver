@@ -101,7 +101,7 @@ def SEAMO2(transportNetwork, problem):
     datas = zip(*[stat.get_params() for stat in gen_stats])
     labels = gen_stats[0].property_names
     for i, data in enumerate(datas):
-        plt.plot(range(len(data)), data, label = labels[i], marker = 'o', linestyle = 'o')
+        plt.plot(range(len(data)), data, label = labels[i], marker = 'o', linestyle = 'None')
     plt.legend()
     plt.savefig(os.path.join('generating','stats.png'))
     plt.clf()

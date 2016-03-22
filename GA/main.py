@@ -24,7 +24,7 @@ def main():
     assert problem.max > problem.min, 'Maximal route length must be longer than Minimal'
     assert problem.busses > 0, 'You need at least 1 bus :)'
     assert problem.tf >= 0, 'The transfer time between busses must be a non-negative number'
-    assert problem.graph in ["Mandl", "Mumford0"], 'Pick an existing map!'
+    assert problem.graph in ["Mandl", "Mumford0", "Mumford1", "Mumford2", "Mumford3"], 'Pick an existing map!'
 
     # define the color list
     cm = plt.get_cmap('gist_rainbow')
