@@ -2,6 +2,7 @@ from GenerateRouteset import repair
 from GenerateRouteset import generateRouteset
 from Generation import crossover, mutate, generate_initial_population
 import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
 import random
 import time
 import os
@@ -102,7 +103,9 @@ def SEAMO2(transportNetwork, problem):
     labels = gen_stats[0].property_names
     for i, data in enumerate(datas):
         plt.plot(range(len(data)), data, label = labels[i], marker = 'o', linestyle = 'o')
-    plt.legend()
+    fontP = FontProperties()
+    fontP.set_size('small')
+    plt.legend(prop = fontP, bbox_to_anchor=(0, 1), loc='upper right', ncol=1)
     plt.savefig(os.path.join('generating','stats.png'))
     plt.clf()
 
