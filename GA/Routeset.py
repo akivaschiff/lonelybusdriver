@@ -209,6 +209,7 @@ class Routeset(object):
 		if not save:
 			plt.show()
 		else:
+			plt.title('busses = %d. Passenger cost = %d, Operator cost = %d' % (self.problem.busses, self.scores['passengers'], self.scores['operator']))
 			plt.savefig('%s%simage_%s.png' % (GEN_PATH, os.path.sep, str(self.imagecounter).zfill(3)), format = 'png')
 			self.imagecounter += 1
 		plt.clf()

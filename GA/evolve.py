@@ -41,7 +41,6 @@ def SEAMO2(transportNetwork, problem):
     #objectives = ["passengers", "operator"]
     objectives = ["passengers"]
 
-    scores_per_generation = [[] for _ in range(problem.generations)]
     gen_stats = []
 
     best_objective = min(population, key = lambda x: x.get_scores("passengers"))
@@ -107,11 +106,6 @@ def SEAMO2(transportNetwork, problem):
     fontP.set_size('small')
     plt.legend(prop = fontP, bbox_to_anchor=(0, 1), loc='upper right', ncol=1)
     plt.savefig(os.path.join('generating','stats.png'))
-    plt.clf()
-
-    for gen, scores in enumerate(scores_per_generation):
-        plt.plot([gen] * len(scores), scores, 'ro')
-    plt.savefig(os.path.join('generating','evolve.png'))
     plt.clf()
 
     return best_objective, gen_stats
