@@ -101,10 +101,12 @@ def SEAMO2(transportNetwork, problem):
     datas = zip(*[stat.get_params() for stat in gen_stats])
     labels = gen_stats[0].property_names
     for i, data in enumerate(datas):
-        plt.plot(range(len(data)), data, label = labels[i], marker = 'o', linestyle = 'o')
+        plt.plot(range(len(data)), data, label = labels[i], marker = 'o', linestyle = 'None')
+    plt.legend()
     fontP = FontProperties()
     fontP.set_size('small')
-    plt.legend(prop = fontP, bbox_to_anchor=(0, 1), loc='upper right', ncol=1)
+    plt.legend(prop = fontP, bbox_to_anchor=(0.95, 1), loc='upper right', ncol=1)
+    plt.title('Map %s - Population size: %d, Generations: %d' % (problem.graph, population_size, generation_count))
     plt.savefig(os.path.join('generating','stats.png'))
     plt.clf()
 
