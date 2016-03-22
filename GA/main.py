@@ -33,7 +33,7 @@ def main():
     transportNetwork = parse_map(problem.graph)
     print 'Running on map %s with initial population of %s for %s generations' % (problem.graph, problem.initial, problem.generations)
     best = SEAMO2(transportNetwork, problem)
-    best['passengers'].show()
+    best.save()
     print best
 
 if __name__ == "__main__":

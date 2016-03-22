@@ -5,7 +5,7 @@ from math import sin, cos, atan
 import itertools
 import shutil
 import os
-GEN_PATH = 'd:\\pngs\\generating'
+GEN_PATH = 'generating'
 
 '''
 The routeset class - This class represents a solution
@@ -29,12 +29,6 @@ class Routeset(object):
 		self.problem = problem
 		self.scores = {}
 		self.imagecounter = 0
-		try:
-			shutil.rmtree(GEN_PATH)
-		except:
-			pass
-		finally:
-			os.mkdir(GEN_PATH)
 
 	def add_stop(self, route_num, node, save = False):
 		# add node to the list of routes and other datastructs
@@ -103,8 +97,8 @@ class Routeset(object):
 	def calc_scores(self):
 		self.scores['passengers'] = self.calc_passenger_cost()
 		self.scores['operator'] = self.calc_operator_cost()
-	def get_scores(self):
-		return self.scores
+	def get_scores(self, key):
+		return self.scores[key]
 	def dominates(self, other):
 		return all(self.scores[k] <= other.scores[k] for k in self.scores.keys())
 	def get_edges(self, route):
@@ -214,8 +208,8 @@ class Routeset(object):
 			plt.show()
 		else:
 			plt.savefig('%s\\image_%s.png' % (GEN_PATH, str(self.imagecounter).zfill(3)), format = 'png')
-			plt.clf()
 			self.imagecounter += 1
+		plt.clf()
 
 	def save(self):
 		self.show(True)
