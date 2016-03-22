@@ -2,31 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf67e3d5-01d4-451d-8be0-4bc9c09296f2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/approx_solution.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/passengers_heuristics.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tools/mundel_2_citymap.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/approx_compare.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CityMap.py" afterPath="$PROJECT_DIR$/CityMap.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_10_1" afterPath="$PROJECT_DIR$/maps/mesh_10_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_11_1" afterPath="$PROJECT_DIR$/maps/mesh_11_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_12_1" afterPath="$PROJECT_DIR$/maps/mesh_12_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_13_1" afterPath="$PROJECT_DIR$/maps/mesh_13_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_14_1" afterPath="$PROJECT_DIR$/maps/mesh_14_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_1_1" afterPath="$PROJECT_DIR$/maps/mesh_1_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_2_1" afterPath="$PROJECT_DIR$/maps/mesh_2_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_3_1" afterPath="$PROJECT_DIR$/maps/mesh_3_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_4_1" afterPath="$PROJECT_DIR$/maps/mesh_4_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_5_1" afterPath="$PROJECT_DIR$/maps/mesh_5_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_6_1" afterPath="$PROJECT_DIR$/maps/mesh_6_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_7_1" afterPath="$PROJECT_DIR$/maps/mesh_7_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_8_1" afterPath="$PROJECT_DIR$/maps/mesh_8_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/mesh_9_1" afterPath="$PROJECT_DIR$/maps/mesh_9_1" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/problems.py" afterPath="$PROJECT_DIR$/problems.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/GA/maps/Mumford0Coords.txt" afterPath="$PROJECT_DIR$/GA/maps/Mumford0Coords.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/grid_10_1_pss_14" afterPath="$PROJECT_DIR$/maps/grid_10_1_pss_14" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/maps/grid_10_1_pss_9" afterPath="$PROJECT_DIR$/maps/grid_10_1_pss_9" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mesh_heuristics.py" afterPath="$PROJECT_DIR$/mesh_heuristics.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/single bus/.ipynb_checkpoints/Untitled-checkpoint.ipynb" afterPath="$PROJECT_DIR$/results/single bus/.ipynb_checkpoints/Untitled-checkpoint.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results/single bus/Untitled.ipynb" afterPath="$PROJECT_DIR$/results/single bus/Untitled.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/simple.py" afterPath="$PROJECT_DIR$/simple.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/create_simple_test.py" afterPath="$PROJECT_DIR$/tools/create_simple_test.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/graph_gen.py" afterPath="$PROJECT_DIR$/tools/graph_gen.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/mundel_2_citymap.py" afterPath="$PROJECT_DIR$/tools/mundel_2_citymap.py" />
     </list>
     <ignored path="lonelybusdriver.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,11 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="simple.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="simple.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/simple.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="84" column="34" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.5123153">
+              <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -59,23 +47,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="approx_solution.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/approx_solution.py">
+      <file leaf-file-name="clustering_cool_solution.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/clustering_cool_solution.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="24" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="create_simple_test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tools/create_simple_test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+            <state vertical-scroll-proportion="-48.411766">
+              <caret line="101" column="19" selection-start-line="101" selection-start-column="19" selection-end-line="101" selection-end-column="19" />
               <folding>
-                <element signature="e#0#23#0" expanded="true" />
+                <element signature="e#0#14#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -85,17 +63,57 @@
         <entry file="file://$PROJECT_DIR$/problems.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="208" column="60" selection-start-line="208" selection-start-column="60" selection-end-line="208" selection-end-column="60" />
+              <caret line="208" column="27" selection-start-line="208" selection-start-column="27" selection-end-line="208" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mesh_heuristics.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/mesh_heuristics.py">
+      <file leaf-file-name="Mumford3Coords.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/maps/Mumford3Coords.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.61538464">
-              <caret line="87" column="42" selection-start-line="87" selection-start-column="42" selection-end-line="87" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mumford2Coords.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/maps/Mumford2Coords.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mumford1Coords.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/maps/Mumford1Coords.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mumford0Coords.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/maps/Mumford0Coords.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.295774">
+              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MandlCoords.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GA/maps/MandlCoords.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -105,7 +123,7 @@
         <entry file="file://$PROJECT_DIR$/passengers_heuristics.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="121" column="41" selection-start-line="121" selection-start-column="25" selection-end-line="121" selection-end-column="41" />
+              <caret line="51" column="48" selection-start-line="51" selection-start-column="48" selection-end-line="51" selection-end-column="48" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -113,41 +131,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="grid_10_1_pss_4" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/maps/grid_10_1_pss_4">
+      <file leaf-file-name="mundel.map" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/maps/mundel.map">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="2565" selection-start-line="0" selection-start-column="2512" selection-end-line="0" selection-end-column="2565" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="grid_4_1" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/maps/grid_4_1">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="446" selection-start-line="0" selection-start-column="446" selection-end-line="0" selection-end-column="446" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tmp.txt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CityMap.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/CityMap.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="77" column="8" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="54" />
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="2723" selection-start-line="0" selection-start-column="2723" selection-end-line="0" selection-end-column="2723" />
               <folding />
             </state>
           </provider>
@@ -164,25 +152,30 @@
         <option value="$PROJECT_DIR$/maps/mesh_5_1" />
         <option value="$PROJECT_DIR$/maps/grid_5_1" />
         <option value="$PROJECT_DIR$/mesh_heuristics" />
-        <option value="$PROJECT_DIR$/tools/mundel_2_citymap.py" />
         <option value="$PROJECT_DIR$/approx_solution.py" />
-        <option value="$PROJECT_DIR$/simple.py" />
-        <option value="$PROJECT_DIR$/tools/graph_gen.py" />
-        <option value="$PROJECT_DIR$/tools/create_simple_test.py" />
         <option value="$PROJECT_DIR$/tmp.txt" />
         <option value="$PROJECT_DIR$/maps/grid_4_1" />
-        <option value="$PROJECT_DIR$/CityMap.py" />
-        <option value="$PROJECT_DIR$/problems.py" />
         <option value="$PROJECT_DIR$/passengers_heuristics.py" />
         <option value="$PROJECT_DIR$/mesh_heuristics.py" />
+        <option value="$PROJECT_DIR$/tools/graph_gen.py" />
+        <option value="$PROJECT_DIR$/CityMap.py" />
+        <option value="$PROJECT_DIR$/tools/create_simple_test.py" />
+        <option value="$PROJECT_DIR$/approx_compare.py" />
+        <option value="$PROJECT_DIR$/tools/mundel_2_citymap.py" />
+        <option value="$PROJECT_DIR$/maps/mundel.map" />
+        <option value="$PROJECT_DIR$/clustering_cool_solution.py" />
+        <option value="$PROJECT_DIR$/problems.py" />
+        <option value="$PROJECT_DIR$/GA/maps/MandlCoords.txt" />
+        <option value="$PROJECT_DIR$/GA/maps/Mumford0Coords.txt" />
+        <option value="$PROJECT_DIR$/simple.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="-9" />
     <option name="y" value="-9" />
-    <option name="width" value="1938" />
-    <option name="height" value="1050" />
+    <option name="width" value="2578" />
+    <option name="height" value="1410" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -239,6 +232,52 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lonelybusdriver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lonelybusdriver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="maps" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lonelybusdriver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lonelybusdriver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lonelybusdriver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="lonelybusdriver" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="GA" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="maps" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -415,10 +454,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1050" extended-state="6" />
+    <frame x="-9" y="-9" width="2578" height="1410" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14791337" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17133833" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -519,14 +558,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="446" selection-start-line="0" selection-start-column="446" selection-end-line="0" selection-end-column="446" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tmp.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -658,28 +689,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tools/mundel_2_citymap.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="14" selection-start-line="20" selection-start-column="38" selection-end-line="21" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tools/graph_gen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-21.294117">
-          <caret line="96" column="0" selection-start-line="96" selection-start-column="0" selection-end-line="96" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tmp.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../ex1/final/searchAgents.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.788136">
@@ -711,30 +720,98 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/mesh_heuristics.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.89162564">
+          <caret line="64" column="94" selection-start-line="64" selection-start-column="94" selection-end-line="64" selection-end-column="94" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/approx_solution.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.68390805">
+          <caret line="38" column="17" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#15#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/graph_gen.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="107" column="62" selection-start-line="107" selection-start-column="62" selection-end-line="107" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/tools/create_simple_test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
+          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/problems.py">
+    <entry file="file://$PROJECT_DIR$/maps/mesh_14_3">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="208" column="60" selection-start-line="208" selection-start-column="60" selection-end-line="208" selection-end-column="60" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/simple.py">
+    <entry file="file://$PROJECT_DIR$/CityMap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-20.705883">
+          <caret line="154" column="21" selection-start-line="154" selection-start-column="21" selection-end-line="154" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/approx_compare.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="84" column="34" selection-start-line="84" selection-start-column="34" selection-end-line="84" selection-end-column="34" />
+          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/maps/mesh_14_1">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="2518" selection-start-line="0" selection-start-column="2518" selection-end-line="0" selection-end-column="2518" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tools/mundel_2_citymap.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="38" selection-start-line="49" selection-start-column="38" selection-end-line="49" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/maps/mundel.map">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="2723" selection-start-line="0" selection-start-column="2723" selection-end-line="0" selection-end-column="2723" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clustering_cool_solution.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-48.411766">
+          <caret line="101" column="19" selection-start-line="101" selection-start-column="19" selection-end-line="101" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -742,34 +819,68 @@
     <entry file="file://$PROJECT_DIR$/passengers_heuristics.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="121" column="41" selection-start-line="121" selection-start-column="25" selection-end-line="121" selection-end-column="41" />
+          <caret line="51" column="48" selection-start-line="51" selection-start-column="48" selection-end-line="51" selection-end-column="48" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/approx_solution.py">
+    <entry file="file://$PROJECT_DIR$/problems.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="24" />
+          <caret line="208" column="27" selection-start-line="208" selection-start-column="27" selection-end-line="208" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/CityMap.py">
+    <entry file="file://$PROJECT_DIR$/GA/maps/Mumford3Coords.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="77" column="8" selection-start-line="77" selection-start-column="8" selection-end-line="77" selection-end-column="54" />
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mesh_heuristics.py">
+    <entry file="file://$PROJECT_DIR$/GA/maps/Mumford2Coords.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.61538464">
-          <caret line="87" column="42" selection-start-line="87" selection-start-column="42" selection-end-line="87" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/maps/Mumford1Coords.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/maps/MandlCoords.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GA/maps/Mumford0Coords.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.295774">
+          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/simple.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5123153">
+          <caret line="81" column="49" selection-start-line="81" selection-start-column="49" selection-end-line="81" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -105,7 +105,7 @@ def wrap_graph_to_VRP(graph, goal, n_busses, a=0, b=100, n_passengers=100):
         "lines": n_busses,
         "stations": stations,
         "roads": roads,
-        "passengers": create_passengers_in_every_station(V)
+        "passengers": create_random_passengers(V, n_passengers)
     }
 
 

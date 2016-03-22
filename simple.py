@@ -94,7 +94,9 @@ def run_simple_test():
 
 
 def main():
-  print run_simple_test()
+  c = CityMap.CityMap(r'maps\mumford5.map')
+  c.draw()
+  plt.show()
 
 if __name__ == '__main__':
   main()
