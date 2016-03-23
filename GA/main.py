@@ -3,20 +3,21 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 from evolve import SEAMO2
 import argparse
+import json
 import sys
 import os
 
 def main():
     parser = argparse.ArgumentParser(
         description='Use SEAMO2 to solve the UNRBP\n example:\n\tpython %s --graph Mandl --busses 4 --min 2 --max  10' % __file__)
-    parser.add_argument("--graph", help="can be on of the following options: (Mandl, Mumford0)")
+    parser.add_argument("--graph", help="can be on of the following options: (Mandl, Mumford[0-3])")
     parser.add_argument("--busses", help="number of busses on map", type=int)
     parser.add_argument("--min", help="minimal route length", type=int, default = 2)
     parser.add_argument("--max", help="maximal route length", type = int, default = 10)
     parser.add_argument("--tf", help="transfer penalty time (default to 5 min)", type = int, default = 5)
     parser.add_argument("--initial", help="initial population size", type = int, default = 20)
     parser.add_argument("--generations", help="number of generations to run through", type = int, default = 10)
-    parser.add_argument("--profile", help="profile", type = bool, default = False)
+    parser.add_argument("--profile", help="run a profiler", action='store_true', default = False)
 
     problem = parser.parse_args()
 
@@ -24,7 +25,7 @@ def main():
     assert problem.max > problem.min, 'Maximal route length must be longer than Minimal'
     assert problem.busses > 0, 'You need at least 1 bus :)'
     assert problem.tf >= 0, 'The transfer time between busses must be a non-negative number'
-    assert problem.graph in ["Mandl", "Mumford0"], 'Pick an existing map!'
+    assert problem.graph in ["Mandl", "Mumford0", "Mumford1", "Mumford2", "Mumford3"], 'Pick an existing map!'
 
     # define the color list
     cm = plt.get_cmap('gist_rainbow')
@@ -40,7 +41,7 @@ def main():
         pr = cProfile.Profile()
         pr.enable()
 
-    best = SEAMO2(transportNetwork, problem)
+    best, stats = SEAMO2(transportNetwork, problem)
 
     if problem.profile:
         pr.disable()
@@ -50,8 +51,10 @@ def main():
         ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
         ps.print_stats()
 
-    best.save()
+    file(os.path.join('generating','best_recent.txt'),'w').write(str(best))
     print best
+    best.save()
+    best.show()
 
 if __name__ == "__main__":
     main()

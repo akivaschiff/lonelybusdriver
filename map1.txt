@@ -1,1 +1,0 @@
-{"roads": [["name1", "name2"], ["name2", "name3"], ["name3", "name4"], ["name4", "name5"], ["name5", "name6"]], "passengers": [["name1", "name2"]], "lines": 2, "goal": "name3", "stations": [["name1", 1, 0], ["name2", 2, 0], ["name3", 3, 0], ["name4", 4, 0], ["name5", 5, 0], ["name6", 6, 0]]}

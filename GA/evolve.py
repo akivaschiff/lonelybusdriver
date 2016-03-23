@@ -2,6 +2,7 @@ from GenerateRouteset import repair
 from GenerateRouteset import generateRouteset
 from Generation import crossover, mutate, generate_initial_population
 import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
 import random
 import time
 import os
@@ -40,7 +41,6 @@ def SEAMO2(transportNetwork, problem):
     #objectives = ["passengers", "operator"]
     objectives = ["passengers"]
 
-    scores_per_generation = [[] for _ in range(problem.generations)]
     gen_stats = []
 
     best_objective = min(population, key = lambda x: x.get_scores("passengers"))
@@ -101,14 +101,13 @@ def SEAMO2(transportNetwork, problem):
     datas = zip(*[stat.get_params() for stat in gen_stats])
     labels = gen_stats[0].property_names
     for i, data in enumerate(datas):
-        plt.plot(range(len(data)), data, label = labels[i], marker = 'o', linestyle = 'o')
+        plt.plot(range(len(data)), data, label = labels[i], marker = 'o', linestyle = 'None')
     plt.legend()
+    fontP = FontProperties()
+    fontP.set_size('small')
+    plt.legend(prop = fontP, bbox_to_anchor=(0.95, 1), loc='upper right', ncol=1)
+    plt.title('Map %s - Population size: %d, Generations: %d' % (problem.graph, population_size, generation_count))
     plt.savefig(os.path.join('generating','stats.png'))
-    plt.clf()
-
-    for gen, scores in enumerate(scores_per_generation):
-        plt.plot([gen] * len(scores), scores, 'ro')
-    plt.savefig(os.path.join('generating','evolve.png'))
     plt.clf()
 
     return best_objective, gen_stats
