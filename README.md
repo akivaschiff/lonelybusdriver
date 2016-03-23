@@ -1,6 +1,6 @@
-################################################################################
-project files for AI project by Nir Moshe, Rachel HaCohen Bloch and Akiva Schiff
-################################################################################
+##########################################################################
+project files for AI project by Nir Moshe, Rachel HaCohen and Akiva Schiff
+##########################################################################
 This folder contains the code for solving the UTRP (Urban Transit Routing Problem)
 
 System Requirements:
