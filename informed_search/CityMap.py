@@ -6,7 +6,7 @@ import json
 
 class CityMap:
 
-    COLORS = ['r', 'g', 'b', 'y', 'orange']
+    COLORS = ['r', 'g', 'b', 'y', 'orange', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b']
     
     def __init__(self, map_file=None, map_json=None):
         """
@@ -166,11 +166,4 @@ class CityMap:
         return math.sqrt((x1-x2)**2 + (y1-y2)**2)
             
 
-
-# In[122]:
-
-#m = CityMap("map1.txt")
-#m.set_route(1, ["name1", "name5", "name6"])
-#m.draw()
-#print m.get_route_weight(1)
 

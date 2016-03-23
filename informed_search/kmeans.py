@@ -191,6 +191,8 @@ def kmeans(points, k, cutoff):
             break
     return clusters
 
+import functools
+	
 def getDistance(a, b):
     '''
     Euclidean distance between two n-dimensional points.
@@ -199,7 +201,7 @@ def getDistance(a, b):
     if a.n != b.n:
         raise Exception("ILLEGAL: non comparable points")
     
-    ret = reduce(lambda x,y: x + pow((a.coords[y]-b.coords[y]), 2),range(a.n),0.0)
+    ret = functools.reduce(lambda x,y: x + pow((a.coords[y]-b.coords[y]), 2),range(a.n),0.0)
     return math.sqrt(ret)
 
 def makeRandomPoint(n, lower, upper):
@@ -260,6 +262,3 @@ def plotClusters(data):
     # Display that plot in a browser
     cmd = "open " + resp['url']
     subprocess.call(cmd, shell=True)
-
-if __name__ == "__main__": 
-    main()
