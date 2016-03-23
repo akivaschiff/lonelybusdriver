@@ -119,7 +119,7 @@ def main():
 
     args = parser.parse_args()
     if (not args.algo) or (args.algo not in graph_function):
-        print "invalid algorithm! use one of the following options: hub \ greedy"
+        print ("invalid algorithm! use one of the following options: hub \ greedy")
         return 0
 
     import time
@@ -131,8 +131,8 @@ def main():
         c.draw_clusters()
     else:
         c.draw()
-    print "Computation time ", e
-    print "Route cost ", sum([c.get_route_weight(i) for i in range(1, c.number_of_busses+1)])
+    print ("Computation time ", e)
+    print ("Route cost ", sum([c.get_route_weight(i) for i in range(1, c.number_of_busses+1)]))
     plt.show()
     
     
